@@ -397,7 +397,7 @@
         <!-- Add Event -->
         <div class="card fade-in">
           <div class="card-header">
-            <div class="card-title">Add Event</div>
+            <div class="card-title" id="event-form-title">Add Event</div>
           </div>
           <div class="grid-2">
             <div>
@@ -428,7 +428,7 @@
           </div>
           <label for="ev-desc">Description (optional)</label>
           <textarea id="ev-desc" placeholder="Brief description..." maxlength="500"></textarea>
-          <button class="btn btn-primary" onclick="submitEvent()">+ Add to Calendar</button>
+          <button class="btn btn-primary" id="event-submit-btn" onclick="submitEvent()">+ Add to Calendar</button>
           <div id="create-msg" class="msg" style="display:none;"></div>
         </div>
 
@@ -464,7 +464,7 @@
         <!-- Add Recurring -->
         <div class="card fade-in">
           <div class="card-header">
-            <div class="card-title">Add Recurring Event</div>
+            <div class="card-title" id="rec-form-title">Add Recurring Event</div>
           </div>
           <div class="grid-2">
             <div>
@@ -532,7 +532,7 @@
           </div>
           <label for="rec-desc">Description (optional)</label>
           <textarea id="rec-desc" placeholder="Brief description..." maxlength="500"></textarea>
-          <button class="btn btn-primary" onclick="submitRecurring()">+ Add Recurring</button>
+          <button class="btn btn-primary" id="rec-submit-btn" onclick="submitRecurring()">+ Add Recurring</button>
           <div id="rec-create-msg" class="msg" style="display:none;"></div>
           <div class="hint">Recurring events appear on every matching day in the public calendar.</div>
         </div>
@@ -775,10 +775,29 @@ function renderList() {
           ${ev.description ? `<div class="event-desc">${esc(ev.description)}</div>` : ''}
         </div>
         <div class="event-actions">
+          <button class="btn btn-sm" style="margin-right: 4px; background: var(--cyan); color: #000;" onclick="editEventSetup('${esc(ev.id)}')">Edit</button>
           <button class="btn btn-sm btn-danger" onclick="deleteEvent('${esc(ev.id)}')">Delete</button>
         </div>
       </div>`;
   }).join('');
+}
+
+let editingEventId = null;
+
+function editEventSetup(id) {
+  const ev = allEvents.find(e => e.id === id);
+  if (!ev) return;
+  editingEventId = id;
+  document.getElementById('ev-date').value = ev.date || '';
+  document.getElementById('ev-title').value = ev.title || '';
+  document.getElementById('ev-type').value = ev.type || 'special';
+  document.getElementById('ev-start').value = ev.startTime || '';
+  document.getElementById('ev-end').value = ev.endTime || '';
+  document.getElementById('ev-desc').value = ev.description || '';
+  
+  document.getElementById('event-form-title').textContent = 'Edit Event';
+  document.getElementById('event-submit-btn').textContent = 'Save Changes';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 async function submitEvent() {
@@ -793,22 +812,30 @@ async function submitEvent() {
 
   if (!date || !title) { showMsg(msgEl, 'error', 'Date and title are required.'); return; }
   try {
-    const res = await fetch('/api/events', {
-      method: 'POST',
+    const url = editingEventId ? '/api/events/' + encodeURIComponent(editingEventId) : '/api/events';
+    const method = editingEventId ? 'PUT' : 'POST';
+
+    const res = await fetch(url, {
+      method,
       headers: { 'Content-Type': 'application/json', Authorization: authHeader() },
       body: JSON.stringify({ date, title, type, startTime, endTime, description }),
     });
     if (res.status === 401) { showMsg(msgEl, 'error', 'Session expired — sign out and back in.'); return; }
-    if (!res.ok) { const d = await res.json().catch(() => ({})); showMsg(msgEl, 'error', d.error || 'Failed to create event.'); return; }
+    if (!res.ok) { const d = await res.json().catch(() => ({})); showMsg(msgEl, 'error', d.error || 'Failed to save event.'); return; }
+    
+    editingEventId = null;
+    document.getElementById('event-form-title').textContent = 'Add Event';
+    document.getElementById('event-submit-btn').textContent = '+ Add to Calendar';
+
     document.getElementById('ev-date').value = '';
     document.getElementById('ev-title').value = '';
     document.getElementById('ev-type').value = 'special';
     document.getElementById('ev-start').value = '';
     document.getElementById('ev-end').value = '';
     document.getElementById('ev-desc').value = '';
-    showMsg(msgEl, 'success', 'Event added to calendar.');
+    showMsg(msgEl, 'success', 'Event saved successfully.');
     loadEvents();
-  } catch { showMsg(msgEl, 'error', 'Failed to create event.'); }
+  } catch { showMsg(msgEl, 'error', 'Failed to save event.'); }
 }
 
 async function deleteEvent(id) {
@@ -909,10 +936,38 @@ function renderRecurring() {
           ${r.description ? `<div class="event-desc">${esc(r.description)}</div>` : ''}
         </div>
         <div class="event-actions">
+          <button class="btn btn-sm" style="margin-right: 4px; background: var(--cyan); color: #000;" onclick="editRecurringSetup('${esc(r.id)}')">Edit</button>
           <button class="btn btn-sm btn-danger" onclick="deleteRecurring('${esc(r.id)}')">Delete</button>
         </div>
       </div>`;
   }).join('');
+}
+
+let editingRecurringId = null;
+
+function editRecurringSetup(id) {
+  const r = allRecurring.find(e => e.id === id);
+  if (!r) return;
+  editingRecurringId = id;
+  
+  document.getElementById('rec-frequency').value = r.frequency || 'weekly';
+  document.getElementById('rec-dow').value = r.dayOfWeek || 0;
+  if(r.nth) document.getElementById('rec-nth').value = r.nth;
+  document.getElementById('rec-title').value = r.title || '';
+  document.getElementById('rec-type').value = r.type || 'special';
+  document.getElementById('rec-start').value = r.startTime || '';
+  document.getElementById('rec-end').value = r.endTime || '';
+  document.getElementById('rec-startdate').value = r.startDate || '';
+  document.getElementById('rec-enddate').value = r.endDate || '';
+  document.getElementById('rec-desc').value = r.description || '';
+  
+  updateRecForm();
+  
+  document.getElementById('rec-form-title').textContent = 'Edit Recurring Event';
+  document.getElementById('rec-submit-btn').textContent = 'Save Changes';
+  
+  // scroll to the form roughly
+  document.getElementById('rec-form-title').scrollIntoView({ behavior: 'smooth' });
 }
 
 async function submitRecurring() {
@@ -935,22 +990,30 @@ async function submitRecurring() {
   if (frequency === 'monthly_nth') body.nth = nth;
 
   try {
-    const res = await fetch('/api/recurring', {
-      method: 'POST',
+    const url = editingRecurringId ? '/api/recurring/' + encodeURIComponent(editingRecurringId) : '/api/recurring';
+    const method = editingRecurringId ? 'PUT' : 'POST';
+
+    const res = await fetch(url, {
+      method,
       headers: { 'Content-Type': 'application/json', Authorization: authHeader() },
       body: JSON.stringify(body),
     });
     if (res.status === 401) { showMsg(msgEl, 'error', 'Session expired — sign out and back in.'); return; }
-    if (!res.ok) { const d = await res.json().catch(() => ({})); showMsg(msgEl, 'error', d.error || 'Failed to create recurring event.'); return; }
+    if (!res.ok) { const d = await res.json().catch(() => ({})); showMsg(msgEl, 'error', d.error || 'Failed to save recurring event.'); return; }
+    
+    editingRecurringId = null;
+    document.getElementById('rec-form-title').textContent = 'Add Recurring Event';
+    document.getElementById('rec-submit-btn').textContent = '+ Add Recurring';
+
     document.getElementById('rec-title').value = '';
     document.getElementById('rec-start').value = '';
     document.getElementById('rec-end').value = '';
     document.getElementById('rec-startdate').value = '';
     document.getElementById('rec-enddate').value = '';
     document.getElementById('rec-desc').value = '';
-    showMsg(msgEl, 'success', 'Recurring event added.');
+    showMsg(msgEl, 'success', 'Recurring event saved.');
     loadRecurring();
-  } catch { showMsg(msgEl, 'error', 'Failed to create recurring event.'); }
+  } catch { showMsg(msgEl, 'error', 'Failed to save recurring event.'); }
 }
 
 async function deleteRecurring(id) {

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "name": "Faker",
+    "game": "League of Legends",
+    "score": 9550,
+    "createdAt": "2026-05-01T18:03:15.540Z"
+  },
+  {
+    "id": "2",
+    "name": "Mango",
+    "game": "Smash Bros Melee",
+    "score": 8400,
+    "createdAt": "2026-05-01T18:03:15.541Z"
+  },
+  {
+    "id": "3",
+    "name": "Shroud",
+    "game": "Valorant",
+    "score": 8100,
+    "createdAt": "2026-05-01T18:03:15.541Z"
+  },
+  {
+    "id": "4",
+    "name": "SonicFox",
+    "game": "Mortal Kombat 1",
+    "score": 7900,
+    "createdAt": "2026-05-01T18:03:15.541Z"
+  }
+]

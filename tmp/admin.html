@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | Hidden Level</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #07070c;
+      --bg-elev: #10101a;
+      --bg-card: #14141f;
+      --bg-soft: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.07);
+      --border-strong: rgba(255,255,255,0.14);
+      --cyan: #00e5ff;
+      --green: #00ff99;
+      --purple: #bf00ff;
+      --pink: #ff3ec1;
+      --yellow: #ffd600;
+      --red: #ff5c7a;
+      --white: #f0f0ff;
+      --muted: #8a8aa8;
+      --faint: #4a4a60;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(0,229,255,0.10), transparent 45%),
+        radial-gradient(circle at 92% 12%, rgba(191,0,255,0.10), transparent 45%),
+        radial-gradient(circle at 50% 110%, rgba(0,255,153,0.06), transparent 55%);
+      pointer-events: none; z-index: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    /* ── Layout ────────────────────────────────────────────── */
+    .shell { position: relative; z-index: 1; display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 240px; flex-shrink: 0;
+      background: rgba(10,10,16,0.85);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid var(--border);
+      padding: 26px 18px;
+      display: flex; flex-direction: column; gap: 4px;
+      position: sticky; top: 0; height: 100vh;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      padding: 4px 8px 22px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+    .brand-mark {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      display: grid; place-items: center;
+      font-weight: 900; color: #000; font-size: 0.95rem;
+      box-shadow: 0 4px 14px rgba(0,229,255,0.25);
+    }
+    .brand-name { font-weight: 800; font-size: 0.92rem; letter-spacing: 0.04em; }
+    .brand-sub { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.16em; margin-top: 2px; }
+
+    .nav-label { font-size: 0.62rem; color: var(--faint); text-transform: uppercase; letter-spacing: 0.18em; padding: 14px 10px 6px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 9px;
+      color: var(--muted); font-size: 0.86rem; font-weight: 500;
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+      border: 1px solid transparent;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--white); }
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(191,0,255,0.18), rgba(0,229,255,0.12));
+      color: var(--white);
+      border-color: rgba(0,229,255,0.25);
+    }
+    .nav-item .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.55; }
+    .sidebar-footer { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--faint); line-height: 1.5; }
+
+    .main { flex: 1; min-width: 0; padding: 30px 38px 60px; }
+    @media (max-width: 880px) {
+      .sidebar { display: none; }
+      .main { padding: 22px 18px 48px; }
+    }
+
+    /* ── Header ────────────────────────────────────────────── */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 18px; flex-wrap: wrap; margin-bottom: 28px;
+    }
+    .page-title { font-size: 1.55rem; font-weight: 800; letter-spacing: 0.02em; }
+    .page-title .accent { background: linear-gradient(90deg, var(--cyan), var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .page-sub { color: var(--muted); font-size: 0.86rem; margin-top: 4px; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .user-chip {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 12px 7px 7px;
+      background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: 99px; font-size: 0.78rem; color: var(--muted);
+    }
+    .user-avatar {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      display: grid; place-items: center; font-weight: 800; color: #000; font-size: 0.74rem;
+    }
+    .btn-logout {
+      background: var(--bg-soft); border: 1px solid var(--border);
+      color: var(--muted); padding: 8px 14px; font-size: 0.78rem;
+      border-radius: 8px; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-logout:hover { border-color: var(--border-strong); color: var(--white); }
+
+    /* ── Cards ─────────────────────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+    }
+    .card-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
+    .card-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); }
+    .card-title .count { color: var(--faint); font-weight: 500; margin-left: 6px; }
+
+    /* ── Stats grid ───────────────────────────────────────── */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    @media (max-width: 880px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+    .stat {
+      position: relative; overflow: hidden;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 18px 16px;
+    }
+    .stat::after {
+      content: ''; position: absolute; top: 0; left: 0; height: 2px; width: 100%;
+      background: linear-gradient(90deg, var(--from), var(--to));
+      opacity: 0.85;
+    }
+    .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 8px; }
+    .stat-value { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.01em; }
+    .stat-foot { font-size: 0.74rem; color: var(--faint); margin-top: 4px; }
+    .stat.cyan   { --from: var(--cyan);   --to: #66f7ff; }
+    .stat.green  { --from: var(--green);  --to: #80ffc7; }
+    .stat.purple { --from: var(--purple); --to: var(--pink); }
+    .stat.yellow { --from: var(--yellow); --to: #ffec80; }
+    .stat-value.cyan   { color: var(--cyan); }
+    .stat-value.green  { color: var(--green); }
+    .stat-value.purple { color: #d966ff; }
+    .stat-value.yellow { color: var(--yellow); }
+
+    /* ── Two-column grid ──────────────────────────────────── */
+    .columns { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; }
+    @media (max-width: 1080px) { .columns { grid-template-columns: 1fr; } }
+
+    /* ── Forms ────────────────────────────────────────────── */
+    label { display: block; font-size: 0.72rem; color: var(--muted); margin-top: 14px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.1em; }
+    label:first-of-type { margin-top: 0; }
+    input, select, textarea {
+      width: 100%; background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border); border-radius: 9px;
+      color: var(--white); font-size: 0.9rem;
+      padding: 11px 13px; outline: none;
+      transition: border-color 0.15s, background 0.15s;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(0,229,255,0.5);
+      background: rgba(0,229,255,0.04);
+    }
+    textarea { resize: vertical; min-height: 78px; }
+    select option { background: #16161f; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: 9px; font-size: 0.85rem;
+      font-weight: 700; cursor: pointer; border: none;
+      transition: transform 0.15s, opacity 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      color: #000; margin-top: 18px;
+      box-shadow: 0 6px 18px rgba(0,229,255,0.18);
+    }
+    .btn-primary:hover { box-shadow: 0 10px 24px rgba(0,229,255,0.28); }
+    .btn-sm { padding: 6px 12px; font-size: 0.72rem; margin-top: 0; border-radius: 7px; }
+    .btn-danger { background: rgba(255,80,110,0.1); color: var(--red); border: 1px solid rgba(255,80,110,0.25); }
+    .btn-danger:hover { background: rgba(255,80,110,0.2); }
+
+    .msg { font-size: 0.84rem; margin-top: 12px; }
+    .msg.success { color: var(--green); }
+    .msg.error { color: var(--red); }
+    .hint { font-size: 0.74rem; color: var(--faint); margin-top: 8px; }
+
+    /* ── Toolbar ──────────────────────────────────────────── */
+    .toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .search {
+      position: relative; flex: 1; min-width: 180px;
+    }
+    .search input { padding-left: 36px; }
+    .search::before {
+      content: ''; position: absolute; left: 12px; top: 50%;
+      width: 14px; height: 14px; transform: translateY(-50%);
+      border: 1.5px solid var(--muted); border-radius: 50%;
+    }
+    .search::after {
+      content: ''; position: absolute; left: 22px; top: calc(50% + 5px);
+      width: 7px; height: 1.5px; background: var(--muted);
+      transform: rotate(45deg);
+    }
+    .filter-pill {
+      padding: 7px 12px; font-size: 0.74rem;
+      background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: 99px; color: var(--muted); cursor: pointer;
+      text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;
+      transition: all 0.15s;
+    }
+    .filter-pill:hover { color: var(--white); border-color: var(--border-strong); }
+    .filter-pill.on { background: rgba(0,229,255,0.1); border-color: rgba(0,229,255,0.4); color: var(--cyan); }
+
+    /* ── Event list ───────────────────────────────────────── */
+    .event-list { display: flex; flex-direction: column; gap: 10px; max-height: 720px; overflow-y: auto; padding-right: 4px; }
+    .event-list::-webkit-scrollbar { width: 8px; }
+    .event-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+    .event-list::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.16); }
+
+    .event-row {
+      display: flex; gap: 14px; align-items: stretch;
+      border: 1px solid var(--border); border-radius: 11px;
+      background: rgba(255,255,255,0.015); overflow: hidden;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .event-row:hover { border-color: var(--border-strong); transform: translateX(2px); }
+    .event-row.past { opacity: 0.62; }
+    .date-block {
+      flex-shrink: 0; width: 64px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 10px 6px; gap: 2px;
+      background: rgba(0,0,0,0.25);
+      border-right: 1px solid var(--border);
+    }
+    .date-month { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.14em; color: var(--cyan); text-transform: uppercase; }
+    .date-day { font-size: 1.5rem; font-weight: 800; line-height: 1; }
+    .date-year { font-size: 0.62rem; color: var(--faint); margin-top: 2px; }
+    .event-body { flex: 1; padding: 12px 14px; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+    .event-title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .event-title { font-size: 0.95rem; font-weight: 700; color: var(--white); }
+    .event-time { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+    .event-desc { font-size: 0.8rem; color: var(--muted); margin-top: 5px; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .event-actions { display: flex; align-items: center; padding: 12px 14px; flex-shrink: 0; }
+
+    .pill {
+      display: inline-block; padding: 2px 9px; border-radius: 99px;
+      font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .pill-community { background: rgba(0,255,153,0.13); color: var(--green); border: 1px solid rgba(0,255,153,0.3); }
+    .pill-family    { background: rgba(191,0,255,0.13); color: #d966ff; border: 1px solid rgba(191,0,255,0.3); }
+    .pill-private   { background: rgba(255,214,0,0.13); color: var(--yellow); border: 1px solid rgba(255,214,0,0.3); }
+    .pill-special   { background: rgba(0,229,255,0.13); color: var(--cyan); border: 1px solid rgba(0,229,255,0.3); }
+
+    .empty {
+      color: var(--muted); font-size: 0.88rem; text-align: center;
+      padding: 40px 20px;
+      border: 1px dashed var(--border); border-radius: 11px;
+    }
+    .empty .empty-icon {
+      width: 44px; height: 44px; margin: 0 auto 12px;
+      border-radius: 50%; background: rgba(255,255,255,0.04);
+      display: grid; place-items: center; font-size: 1.4rem; color: var(--faint);
+    }
+
+    /* ── Login ────────────────────────────────────────────── */
+    #login-section, #dashboard-section { display: none; }
+    .login-wrap { min-height: 100vh; display: grid; place-items: center; padding: 20px; position: relative; z-index: 1; }
+    .login-card {
+      width: 100%; max-width: 400px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    .login-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .login-brand .brand-mark { width: 38px; height: 38px; font-size: 1.05rem; }
+    .login-title { font-size: 1.15rem; font-weight: 800; }
+    .login-sub { color: var(--muted); font-size: 0.84rem; margin-top: 2px; }
+
+    /* ── Animations ───────────────────────────────────────── */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    .fade-in { animation: fadeIn 0.25s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-section">
+  <div class="login-wrap">
+    <div class="login-card fade-in">
+      <div class="login-brand">
+        <div class="brand-mark">HL</div>
+        <div>
+          <div class="login-title">Hidden Level Admin</div>
+          <div class="login-sub">Sign in to manage the calendar.</div>
+        </div>
+      </div>
+      <label for="login-user">Username</label>
+      <input type="text" id="login-user" autocomplete="username" />
+      <label for="login-pass">Password</label>
+      <input type="password" id="login-pass" autocomplete="current-password" />
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="login()">Sign In</button>
+      <div id="login-msg" class="msg" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard-section">
+  <div class="shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">HL</div>
+        <div>
+          <div class="brand-name">Hidden Level</div>
+          <div class="brand-sub">Admin</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Manage</div>
+      <a class="nav-item active"><span class="dot"></span>Events</a>
+      <a class="nav-item" href="/calendar.html"><span class="dot"></span>View Calendar</a>
+
+      <div class="nav-label">Site</div>
+      <a class="nav-item" href="/" target="_blank"><span class="dot"></span>Home</a>
+      <a class="nav-item" href="/pricing.html" target="_blank"><span class="dot"></span>Pricing</a>
+      <a class="nav-item" href="/contact.html" target="_blank"><span class="dot"></span>Contact</a>
+
+      <div class="sidebar-footer">
+        Hidden Level Cyber Cafe<br/>
+        Admin Console v1.0
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <div class="page-title"><span class="accent">Events</span> Dashboard</div>
+          <div class="page-sub">Create and manage events shown on the public calendar.</div>
+        </div>
+        <div class="topbar-right">
+          <div class="user-chip">
+            <div class="user-avatar" id="user-avatar">A</div>
+            <span id="user-name">admin</span>
+          </div>
+          <button class="btn-logout" onclick="logout()">Sign Out</button>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats">
+        <div class="stat cyan">
+          <div class="stat-label">Total Events</div>
+          <div class="stat-value cyan" id="stat-total">0</div>
+          <div class="stat-foot">All-time scheduled</div>
+        </div>
+        <div class="stat green">
+          <div class="stat-label">Upcoming</div>
+          <div class="stat-value green" id="stat-upcoming">0</div>
+          <div class="stat-foot" id="stat-next">No events scheduled</div>
+        </div>
+        <div class="stat purple">
+          <div class="stat-label">This Month</div>
+          <div class="stat-value purple" id="stat-month">0</div>
+          <div class="stat-foot" id="stat-month-name">—</div>
+        </div>
+        <div class="stat yellow">
+          <div class="stat-label">Past</div>
+          <div class="stat-value yellow" id="stat-past">0</div>
+          <div class="stat-foot">Already happened</div>
+        </div>
+      </div>
+
+      <!-- COLUMNS -->
+      <div class="columns">
+
+        <!-- Add Event -->
+        <div class="card fade-in">
+          <div class="card-header">
+            <div class="card-title">Add Event</div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label for="ev-date">Date</label>
+              <input type="date" id="ev-date" />
+            </div>
+            <div>
+              <label for="ev-type">Type</label>
+              <select id="ev-type">
+                <option value="special">Special Event</option>
+                <option value="community">Community</option>
+                <option value="family">Family</option>
+                <option value="private">Private</option>
+              </select>
+            </div>
+          </div>
+          <label for="ev-title">Title</label>
+          <input type="text" id="ev-title" placeholder="e.g. Tournament Night" maxlength="100" />
+          <div class="grid-2">
+            <div>
+              <label for="ev-start">Start Time (optional)</label>
+              <input type="text" id="ev-start" placeholder="e.g. 6pm" maxlength="8" />
+            </div>
+            <div>
+              <label for="ev-end">End Time (optional)</label>
+              <input type="text" id="ev-end" placeholder="e.g. 9pm" maxlength="8" />
+            </div>
+          </div>
+          <label for="ev-desc">Description (optional)</label>
+          <textarea id="ev-desc" placeholder="Brief description..." maxlength="500"></textarea>
+          <button class="btn btn-primary" onclick="submitEvent()">+ Add to Calendar</button>
+          <div id="create-msg" class="msg" style="display:none;"></div>
+        </div>
+
+        <!-- Event List -->
+        <div class="card fade-in">
+          <div class="card-header">
+            <div class="card-title">All Events <span class="count" id="event-count"></span></div>
+          </div>
+          <div class="toolbar" style="margin-bottom:14px;">
+            <div class="search">
+              <input type="text" id="search-input" placeholder="Search events..." oninput="renderList()" />
+            </div>
+          </div>
+          <div class="toolbar" style="margin-bottom:14px;">
+            <button class="filter-pill on" data-filter="all" onclick="setFilter(this)">All</button>
+            <button class="filter-pill" data-filter="upcoming" onclick="setFilter(this)">Upcoming</button>
+            <button class="filter-pill" data-filter="past" onclick="setFilter(this)">Past</button>
+            <button class="filter-pill" data-filter="community" onclick="setFilter(this)">Community</button>
+            <button class="filter-pill" data-filter="family" onclick="setFilter(this)">Family</button>
+            <button class="filter-pill" data-filter="private" onclick="setFilter(this)">Private</button>
+            <button class="filter-pill" data-filter="special" onclick="setFilter(this)">Special</button>
+          </div>
+          <div id="event-list" class="event-list">
+            <div class="empty">Loading…</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RECURRING EVENTS -->
+      <div class="columns" style="margin-top:24px;">
+
+        <!-- Add Recurring -->
+        <div class="card fade-in">
+          <div class="card-header">
+            <div class="card-title">Add Recurring Event</div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label for="rec-frequency">Frequency</label>
+              <select id="rec-frequency" onchange="updateRecForm()">
+                <option value="weekly">Weekly</option>
+                <option value="monthly_nth">Monthly (Nth weekday)</option>
+              </select>
+            </div>
+            <div>
+              <label for="rec-type">Type</label>
+              <select id="rec-type">
+                <option value="special">Special Event</option>
+                <option value="community">Community</option>
+                <option value="family">Family</option>
+                <option value="private">Private</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div id="rec-nth-wrap" style="display:none;">
+              <label for="rec-nth">Which Week</label>
+              <select id="rec-nth">
+                <option value="1">1st</option>
+                <option value="2">2nd</option>
+                <option value="3">3rd</option>
+                <option value="4">4th</option>
+                <option value="-1">Last</option>
+              </select>
+            </div>
+            <div>
+              <label for="rec-dow">Day of Week</label>
+              <select id="rec-dow">
+                <option value="0">Sunday</option>
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+                <option value="6">Saturday</option>
+              </select>
+            </div>
+          </div>
+          <label for="rec-title">Title</label>
+          <input type="text" id="rec-title" placeholder="e.g. Trivia Night" maxlength="100" />
+          <div class="grid-2">
+            <div>
+              <label for="rec-start">Start Time (optional)</label>
+              <input type="text" id="rec-start" placeholder="e.g. 7pm" maxlength="8" />
+            </div>
+            <div>
+              <label for="rec-end">End Time (optional)</label>
+              <input type="text" id="rec-end" placeholder="e.g. 10pm" maxlength="8" />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label for="rec-startdate">Starts On (optional)</label>
+              <input type="date" id="rec-startdate" />
+            </div>
+            <div>
+              <label for="rec-enddate">Ends On (optional)</label>
+              <input type="date" id="rec-enddate" />
+            </div>
+          </div>
+          <label for="rec-desc">Description (optional)</label>
+          <textarea id="rec-desc" placeholder="Brief description..." maxlength="500"></textarea>
+          <button class="btn btn-primary" onclick="submitRecurring()">+ Add Recurring</button>
+          <div id="rec-create-msg" class="msg" style="display:none;"></div>
+          <div class="hint">Recurring events appear on every matching day in the public calendar.</div>
+        </div>
+
+        <!-- Recurring List -->
+        <div class="card fade-in">
+          <div class="card-header">
+            <div class="card-title">Recurring Events <span class="count" id="rec-count"></span></div>
+          </div>
+          <div id="rec-list" class="event-list">
+            <div class="empty">Loading…</div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+'use strict';
+let creds = null;
+let allEvents = [];
+let currentFilter = 'all';
+
+function authHeader() { return 'Basic ' + btoa(creds.u + ':' + creds.p); }
+
+document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+async function login() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  const msgEl = document.getElementById('login-msg');
+  msgEl.style.display = 'none';
+  if (!u || !p) { showMsg(msgEl, 'error', 'Enter username and password.'); return; }
+  try {
+    const res = await fetch('/api/admin/ping', { headers: { Authorization: 'Basic ' + btoa(u + ':' + p) } });
+    if (res.status === 401) { showMsg(msgEl, 'error', 'Incorrect username or password.'); return; }
+    if (!res.ok) { showMsg(msgEl, 'error', 'Server error. Check ADMIN_USERNAME and ADMIN_PASSWORD are set.'); return; }
+    creds = { u, p };
+    sessionStorage.setItem('hl_admin', btoa(u + ':' + p));
+    showDashboard();
+  } catch { showMsg(msgEl, 'error', 'Could not reach the server.'); }
+}
+
+function logout() {
+  creds = null;
+  sessionStorage.removeItem('hl_admin');
+  document.getElementById('dashboard-section').style.display = 'none';
+  document.getElementById('login-section').style.display = 'block';
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+function showDashboard() {
+  document.getElementById('login-section').style.display = 'none';
+  document.getElementById('dashboard-section').style.display = 'block';
+  if (creds) {
+    document.getElementById('user-name').textContent = creds.u;
+    document.getElementById('user-avatar').textContent = (creds.u[0] || 'A').toUpperCase();
+  }
+  loadEvents();
+  loadRecurring();
+  updateRecForm();
+}
+
+function setFilter(btn) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('on'));
+  btn.classList.add('on');
+  currentFilter = btn.dataset.filter;
+  renderList();
+}
+
+function todayISO() {
+  const t = new Date();
+  return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+}
+
+function updateStats() {
+  const today = todayISO();
+  const now = new Date();
+  const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const monthName = now.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+  let total = allEvents.length;
+  let upcoming = 0, past = 0, thisMonth = 0;
+  let nextEvent = null;
+  const upcomingSorted = [];
+  for (const ev of allEvents) {
+    if (ev.date >= today) { upcoming++; upcomingSorted.push(ev); }
+    else past++;
+    if (ev.date.startsWith(monthKey)) thisMonth++;
+  }
+  upcomingSorted.sort((a,b) => a.date.localeCompare(b.date));
+  nextEvent = upcomingSorted[0];
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-upcoming').textContent = upcoming;
+  document.getElementById('stat-month').textContent = thisMonth;
+  document.getElementById('stat-month-name').textContent = monthName;
+  document.getElementById('stat-past').textContent = past;
+  document.getElementById('stat-next').textContent = nextEvent
+    ? `Next: ${formatDate(nextEvent.date)}`
+    : 'No upcoming events';
+}
+
+async function loadEvents() {
+  const listEl = document.getElementById('event-list');
+  try {
+    const res = await fetch('/api/events');
+    const events = await res.json();
+    allEvents = Array.isArray(events) ? events : [];
+    updateStats();
+    renderList();
+  } catch {
+    listEl.innerHTML = '<div class="empty" style="color:var(--red);">Failed to load events.</div>';
+  }
+}
+
+function renderList() {
+  const listEl = document.getElementById('event-list');
+  const countEl = document.getElementById('event-count');
+  const today = todayISO();
+  const search = document.getElementById('search-input').value.trim().toLowerCase();
+
+  let filtered = allEvents.slice();
+  if (currentFilter === 'upcoming') filtered = filtered.filter(e => e.date >= today);
+  else if (currentFilter === 'past') filtered = filtered.filter(e => e.date < today);
+  else if (['community','family','private','special'].includes(currentFilter)) {
+    filtered = filtered.filter(e => e.type === currentFilter);
+  }
+  if (search) {
+    filtered = filtered.filter(e =>
+      (e.title || '').toLowerCase().includes(search) ||
+      (e.description || '').toLowerCase().includes(search)
+    );
+  }
+
+  filtered.sort((a, b) => a.date.localeCompare(b.date));
+  countEl.textContent = `(${filtered.length})`;
+
+  if (!filtered.length) {
+    listEl.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">∅</div>
+        ${allEvents.length ? 'No events match this filter.' : 'No custom events yet. Add one to the left.'}
+      </div>`;
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(ev => {
+    const [y, m, d] = ev.date.split('-');
+    const monthShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m - 1];
+    const isPast = ev.date < today;
+    const timeStr = ev.startTime ? (ev.endTime ? `${ev.startTime} – ${ev.endTime}` : ev.startTime) : '';
+    return `
+      <div class="event-row ${isPast ? 'past' : ''}">
+        <div class="date-block">
+          <div class="date-month">${monthShort}</div>
+          <div class="date-day">${+d}</div>
+          <div class="date-year">${y}</div>
+        </div>
+        <div class="event-body">
+          <div class="event-title-row">
+            <div class="event-title">${esc(ev.title)}</div>
+            <span class="pill pill-${esc(ev.type)}">${esc(ev.type)}</span>
+          </div>
+          ${timeStr ? `<div class="event-time">${esc(timeStr)}</div>` : ''}
+          ${ev.description ? `<div class="event-desc">${esc(ev.description)}</div>` : ''}
+        </div>
+        <div class="event-actions">
+          <button class="btn btn-sm btn-danger" onclick="deleteEvent('${esc(ev.id)}')">Delete</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function submitEvent() {
+  const date = document.getElementById('ev-date').value;
+  const title = document.getElementById('ev-title').value.trim();
+  const type = document.getElementById('ev-type').value;
+  const startTime = document.getElementById('ev-start').value.trim();
+  const endTime = document.getElementById('ev-end').value.trim();
+  const description = document.getElementById('ev-desc').value.trim();
+  const msgEl = document.getElementById('create-msg');
+  msgEl.style.display = 'none';
+
+  if (!date || !title) { showMsg(msgEl, 'error', 'Date and title are required.'); return; }
+  try {
+    const res = await fetch('/api/events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: authHeader() },
+      body: JSON.stringify({ date, title, type, startTime, endTime, description }),
+    });
+    if (res.status === 401) { showMsg(msgEl, 'error', 'Session expired — sign out and back in.'); return; }
+    if (!res.ok) { const d = await res.json().catch(() => ({})); showMsg(msgEl, 'error', d.error || 'Failed to create event.'); return; }
+    document.getElementById('ev-date').value = '';
+    document.getElementById('ev-title').value = '';
+    document.getElementById('ev-type').value = 'special';
+    document.getElementById('ev-start').value = '';
+    document.getElementById('ev-end').value = '';
+    document.getElementById('ev-desc').value = '';
+    showMsg(msgEl, 'success', 'Event added to calendar.');
+    loadEvents();
+  } catch { showMsg(msgEl, 'error', 'Failed to create event.'); }
+}
+
+async function deleteEvent(id) {
+  if (!confirm('Delete this event?')) return;
+  try {
+    const res = await fetch('/api/events/' + encodeURIComponent(id), { method: 'DELETE', headers: { Authorization: authHeader() } });
+    if (res.status === 401) { alert('Session expired — sign out and back in.'); return; }
+    if (res.ok) loadEvents();
+  } catch { alert('Failed to delete event.'); }
+}
+
+function showMsg(el, type, text) {
+  el.className = 'msg ' + type; el.textContent = text; el.style.display = 'block';
+  if (type === 'success') setTimeout(() => { el.style.display = 'none'; }, 3500);
+}
+
+function formatDate(iso) {
+  const [y, m, d] = iso.split('-');
+  return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m - 1] + ` ${+d}, ${y}`;
+}
+
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Recurring events ─────────────────────────────────── */
+let allRecurring = [];
+
+const DOW_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const NTH_NAMES = { '1': '1st', '2': '2nd', '3': '3rd', '4': '4th', '-1': 'Last' };
+
+function updateRecForm() {
+  const freq = document.getElementById('rec-frequency').value;
+  document.getElementById('rec-nth-wrap').style.display = freq === 'monthly_nth' ? '' : 'none';
+}
+
+async function loadRecurring() {
+  const listEl = document.getElementById('rec-list');
+  try {
+    const res = await fetch('/api/recurring');
+    const list = await res.json();
+    allRecurring = Array.isArray(list) ? list : [];
+    renderRecurring();
+  } catch {
+    listEl.innerHTML = '<div class="empty" style="color:var(--red);">Failed to load recurring events.</div>';
+  }
+}
+
+function describeRule(r) {
+  const dow = DOW_NAMES[r.dayOfWeek] || '?';
+  if (r.frequency === 'weekly') return `Every ${dow}`;
+  if (r.frequency === 'monthly_nth') {
+    const n = NTH_NAMES[String(r.nth)] || '?';
+    return `${n} ${dow} of the month`;
+  }
+  return r.frequency;
+}
+
+function renderRecurring() {
+  const listEl = document.getElementById('rec-list');
+  const countEl = document.getElementById('rec-count');
+  countEl.textContent = `(${allRecurring.length})`;
+
+  if (!allRecurring.length) {
+    listEl.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">∅</div>
+        No recurring events yet. Add one to the left.
+      </div>`;
+    return;
+  }
+
+  const sorted = allRecurring.slice().sort((a, b) => {
+    if (a.dayOfWeek !== b.dayOfWeek) return a.dayOfWeek - b.dayOfWeek;
+    return (a.title || '').localeCompare(b.title || '');
+  });
+
+  listEl.innerHTML = sorted.map(r => {
+    const cadence = describeRule(r);
+    const timeStr = r.startTime ? (r.endTime ? `${r.startTime} – ${r.endTime}` : r.startTime) : '';
+    const range = [];
+    if (r.startDate) range.push(`from ${r.startDate}`);
+    if (r.endDate) range.push(`until ${r.endDate}`);
+    const rangeStr = range.join(' ');
+    return `
+      <div class="event-row">
+        <div class="date-block">
+          <div class="date-month">${esc(cadence.split(' ')[0])}</div>
+          <div class="date-day" style="font-size:0.95rem;">${esc(DOW_NAMES[r.dayOfWeek].slice(0,3))}</div>
+        </div>
+        <div class="event-body">
+          <div class="event-title-row">
+            <div class="event-title">${esc(r.title)}</div>
+            <span class="pill pill-${esc(r.type)}">${esc(r.type)}</span>
+          </div>
+          <div class="event-time">${esc(cadence)}${timeStr ? ' · ' + esc(timeStr) : ''}</div>
+          ${rangeStr ? `<div class="event-time">${esc(rangeStr)}</div>` : ''}
+          ${r.description ? `<div class="event-desc">${esc(r.description)}</div>` : ''}
+        </div>
+        <div class="event-actions">
+          <button class="btn btn-sm btn-danger" onclick="deleteRecurring('${esc(r.id)}')">Delete</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function submitRecurring() {
+  const frequency = document.getElementById('rec-frequency').value;
+  const dayOfWeek = parseInt(document.getElementById('rec-dow').value, 10);
+  const nth = parseInt(document.getElementById('rec-nth').value, 10);
+  const title = document.getElementById('rec-title').value.trim();
+  const type = document.getElementById('rec-type').value;
+  const startTime = document.getElementById('rec-start').value.trim();
+  const endTime = document.getElementById('rec-end').value.trim();
+  const startDate = document.getElementById('rec-startdate').value;
+  const endDate = document.getElementById('rec-enddate').value;
+  const description = document.getElementById('rec-desc').value.trim();
+  const msgEl = document.getElementById('rec-create-msg');
+  msgEl.style.display = 'none';
+
+  if (!title) { showMsg(msgEl, 'error', 'Title is required.'); return; }
+
+  const body = { title, type, startTime, endTime, description, frequency, dayOfWeek, startDate, endDate };
+  if (frequency === 'monthly_nth') body.nth = nth;
+
+  try {
+    const res = await fetch('/api/recurring', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: authHeader() },
+      body: JSON.stringify(body),
+    });
+    if (res.status === 401) { showMsg(msgEl, 'error', 'Session expired — sign out and back in.'); return; }
+    if (!res.ok) { const d = await res.json().catch(() => ({})); showMsg(msgEl, 'error', d.error || 'Failed to create recurring event.'); return; }
+    document.getElementById('rec-title').value = '';
+    document.getElementById('rec-start').value = '';
+    document.getElementById('rec-end').value = '';
+    document.getElementById('rec-startdate').value = '';
+    document.getElementById('rec-enddate').value = '';
+    document.getElementById('rec-desc').value = '';
+    showMsg(msgEl, 'success', 'Recurring event added.');
+    loadRecurring();
+  } catch { showMsg(msgEl, 'error', 'Failed to create recurring event.'); }
+}
+
+async function deleteRecurring(id) {
+  if (!confirm('Delete this recurring event? It will disappear from the calendar.')) return;
+  try {
+    const res = await fetch('/api/recurring/' + encodeURIComponent(id), { method: 'DELETE', headers: { Authorization: authHeader() } });
+    if (res.status === 401) { alert('Session expired — sign out and back in.'); return; }
+    if (res.ok) loadRecurring();
+  } catch { alert('Failed to delete recurring event.'); }
+}
+
+(function init() {
+  const saved = sessionStorage.getItem('hl_admin');
+  if (saved) {
+    try {
+      const decoded = atob(saved);
+      const sep = decoded.indexOf(':');
+      if (sep > 0) { creds = { u: decoded.slice(0, sep), p: decoded.slice(sep + 1) }; showDashboard(); return; }
+    } catch {}
+  }
+  document.getElementById('login-section').style.display = 'block';
+})();
+</script>
+</body>
+</html>

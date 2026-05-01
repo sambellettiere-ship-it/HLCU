@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard | Hidden Level Cyber Cafe</title>
+  <meta name="description" content="Check out the top players and register for the Hidden Level leaderboard." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="leaderboard">
+
+<!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="mark">HL</span>
+      HIDDEN <span class="accent">LEVEL</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="about.html" data-page="about">About</a></li>
+      <li><a href="leaderboard.html" data-page="leaderboard">Leaderboard</a></li>
+      <li><a href="calendar.html" data-page="calendar">Events</a></li>
+      <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
+      <li><a href="contact.html" data-page="contact">Contact</a></li>
+      <li>
+        <a href="https://discord.gg/w6xh7fzxr3"
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn-discord" style="padding:8px 16px;font-size:0.65rem;">
+          Join Discord
+        </a>
+      </li>
+    </ul>
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <span class="eyebrow">Hall of Fame</span>
+    <h1>Leaderboard</h1>
+    <p>Register as a player and track the top scores at Hidden Level.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- LEADERBOARD SECTION -->
+  <section class="leaderboard-section">
+    <div class="container">
+      <div class="card reveal">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+          <h2 style="font-size: 1.5rem; color: var(--cyan);" id="lb-title">Leaderboard</h2>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <label for="game-filter" style="color: var(--text-muted); font-family: var(--font-head); text-transform: uppercase;">Game:</label>
+            <select id="game-filter" class="filter-select" onchange="renderLeaderboard()">
+              <option value="">Loading...</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="table-responsive" style="overflow-x: auto;">
+          <table style="width: 100%; text-align: left; border-collapse: collapse; min-width: 500px;">
+            <thead id="leaderboard-head">
+               <!-- dynamically populated -->
+            </thead>
+            <tbody id="leaderboard-body">
+              <!-- Data populated by JS -->
+              <tr>
+                <td style="padding: 24px 8px; text-align: center; color: var(--text-muted);">Loading scores...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .filter-select { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 12px; color: var(--white); font-family: var(--font-body); font-size: 0.9rem; outline: none; transition: border-color var(--fast); }
+    .filter-select:focus { border-color: var(--cyan); }
+    .filter-select option { background: var(--bg); color: var(--white); }
+
+    #leaderboard-body tr { border-bottom: 1px solid rgba(255,255,255,0.05); transition: background var(--fast); }
+    #leaderboard-body tr:hover { background: rgba(0,229,255,0.05); }
+    #leaderboard-body td { padding: 16px 8px; font-size: 1.1rem; }
+  </style>
+
+  <script>
+    let lbData = { players: [], games: [], entries: [] };
+    
+    const loadLeaderboard = async () => {
+      try {
+        const res = await fetch('/api/leaderboard');
+        lbData = await res.json();
+        populateGameFilter();
+        renderLeaderboard();
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const populateGameFilter = () => {
+      const select = document.getElementById('game-filter');
+      if (!lbData.games || lbData.games.length === 0) {
+        select.innerHTML = '<option value="">No games configured</option>';
+        return;
+      }
+      select.innerHTML = lbData.games.map(g => `<option value="${g.id}">${esc(g.name)}</option>`).join('');
+    };
+
+    const renderLeaderboard = () => {
+      const gameId = document.getElementById('game-filter').value;
+      const game = lbData.games.find(g => g.id === gameId);
+      
+      const thead = document.getElementById('leaderboard-head');
+      const tbody = document.getElementById('leaderboard-body');
+      
+      if (!game) {
+        thead.innerHTML = '';
+        tbody.innerHTML = '<tr><td style="text-align:center; padding: 24px; color: var(--text-muted);">Please select a game</td></tr>';
+        return;
+      }
+      
+      document.getElementById('lb-title').textContent = `${game.name} Leaderboard`;
+
+      // Build Headers
+      let theadHtml = `
+        <tr style="border-bottom: 1px solid var(--border-cyan); color: var(--text-muted); font-family: var(--font-head); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">
+          <th style="padding: 12px 8px; width: 60px;">Rank</th>
+          <th style="padding: 12px 8px;">Player</th>
+      `;
+      game.stats.forEach(s => {
+        theadHtml += `<th style="padding: 12px 8px; text-align: right;">${esc(s.label)}</th>`;
+      });
+      theadHtml += `</tr>`;
+      thead.innerHTML = theadHtml;
+      
+      // Filter entries
+      let entries = lbData.entries.filter(e => e.gameId === gameId);
+      
+      // Sort: prioritize the first stat, then second, etc.
+      entries.sort((a,b) => {
+        for(let i=0; i<game.stats.length; i++) {
+          const key = game.stats[i].key;
+          const aVal = a.statsValues[key] || 0;
+          const bVal = b.statsValues[key] || 0;
+          if (bVal !== aVal) return bVal - aVal;
+        }
+        return 0;
+      });
+
+      if (entries.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="${game.stats.length + 2}" style="padding: 24px 8px; text-align: center; color: var(--text-muted);">No entries yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = entries.map((entry, index) => {
+        const player = lbData.players.find(p => p.id === entry.playerId);
+        const playerName = player ? player.name : 'Unknown Player';
+        const isTop = index < 3;
+        const rankStyle = isTop ? 'color: var(--cyan); font-weight: 700; font-family: var(--font-head);' : 'color: var(--text-muted);';
+        
+        let rowHtml = `
+          <tr>
+            <td style="${rankStyle}">#${index + 1}</td>
+            <td style="color: var(--white); font-weight: 600;">${esc(playerName)}</td>
+        `;
+        
+        game.stats.forEach((s, idx) => {
+          const val = entry.statsValues[s.key] !== undefined ? entry.statsValues[s.key] : 0;
+          const color = idx === 0 ? 'var(--green)' : 'var(--cyan)';
+          rowHtml += `<td style="text-align: right; color: ${color}; font-weight: bold;">${val}</td>`;
+        });
+        
+        rowHtml += `</tr>`;
+        return rowHtml;
+      }).join('');
+    };
+
+    function esc(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadLeaderboard();
+    });
+  </script>
+
+  <div class="divider"></div>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <div class="container">
+      <div class="cta-box reveal">
+        <h2>Whether You're Here to <span class="gradient-text">Compete, Connect,</span><br />or Just Have Fun</h2>
+        <p>Day pass $15 · Memberships from $30/mo · VIP $120/mo · Always welcome.</p>
+        <div class="btn-group">
+          <a href="pricing.html" class="btn btn-primary">View Pricing</a>
+          <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer" class="btn btn-discord">Join Discord</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-wrap -->
+
+<!-- ══ FOOTER ═══════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <span class="mark">HL</span>
+          HIDDEN <span class="accent">LEVEL</span>
+        </div>
+        <p>Urbana-Champaign's gaming destination. PC stations, consoles, community events, and a space to belong.</p>
+        <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer"
+           class="btn btn-discord" style="font-size:0.65rem;padding:10px 20px;">
+          Join Our Discord
+        </a>
+      </div>
+      <div class="footer__col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="calendar.html">Events</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <address>
+          <a href="https://maps.google.com/?q=110+E+University+Ave+Urbana+IL" target="_blank" rel="noopener noreferrer">
+            110 E University Ave<br />Suite I, Urbana IL
+          </a><br /><br />
+          <a href="tel:2174187404">217-418-7404</a><br />
+          <a href="mailto:Hiddenlevelcu@gmail.com">Hiddenlevelcu@gmail.com</a>
+        </address>
+      </div>
+      <div class="footer__col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
+          <li><a href="calendar.html">Better Together Night</a></li>
+          <li><a href="calendar.html">Family Game Night</a></li>
+          <li><a href="contact.html">Private Bookings</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2026 Hidden Level Cyber Cafe · Urbana, IL</p>
+      <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer" class="footer__discord">
+        💬 Join Our Discord
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js?v=4"></script>
+</body>
+</html>

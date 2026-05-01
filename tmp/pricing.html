@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing | Hidden Level Cyber Cafe</title>
+  <meta name="description" content="Hidden Level pricing — Event Entry $10 per person. Monthly Membership $50/month. Private bookings $150/hour." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="pricing">
+
+<!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="mark">HL</span>
+      HIDDEN <span class="accent">LEVEL</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="about.html" data-page="about">About</a></li>
+      <li><a href="calendar.html" data-page="calendar">Events</a></li>
+      <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
+      <li><a href="contact.html" data-page="contact">Contact</a></li>
+      <li>
+        <a href="https://discord.gg/w6xh7fzxr3"
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn-discord" style="padding:8px 16px;font-size:0.65rem;">
+          Join Discord
+        </a>
+      </li>
+    </ul>
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <span class="eyebrow">Plans</span>
+    <h1>Simple Pricing</h1>
+    <p>No hidden fees. No complicated tiers. Just pick how you want to play.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EVENT ENTRY STRIP -->
+  <section style="padding:40px 0 0;">
+    <div class="container">
+      <div class="card reveal" style="max-width:760px;margin:0 auto;border-color:rgba(0,229,255,0.3);background:linear-gradient(135deg,rgba(0,229,255,0.05),var(--bg-card));">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:20px;">
+          <div>
+            <div class="section-tag" style="margin-bottom:8px;">Walk-In Option</div>
+            <h3 style="font-size:1.1rem;color:var(--white);margin-bottom:6px;">Event Entry / Day Pass</h3>
+            <p style="color:var(--text-muted);font-size:0.92rem;max-width:480px;">Walk-in price for any single hosted event — tournaments, date nights, LAN parties, themed game nights, and more. Pay once, play for the full session. No membership required.</p>
+          </div>
+          <div style="text-align:center;flex-shrink:0;">
+            <div style="font-family:var(--font-head);font-size:2.8rem;font-weight:900;color:var(--cyan);text-shadow:var(--glow-cyan);line-height:1;">$10</div>
+            <div style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.1em;color:var(--text-faint);text-transform:uppercase;margin-top:4px;">per person</div>
+          </div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:16px;">
+          <div style="font-family:var(--font-head);font-size:0.6rem;letter-spacing:0.15em;color:var(--cyan);text-transform:uppercase;margin-bottom:10px;">What's Included</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+            <li style="display:flex;align-items:flex-start;gap:8px;color:var(--text-muted);font-size:0.9rem;"><span style="color:var(--cyan);font-size:0.7rem;margin-top:3px;">✓</span> Use of PC and consoles outside of events</li>
+            <li style="padding-left:16px;color:var(--text-faint);font-size:0.8rem;font-style:italic;">— or —</li>
+            <li style="display:flex;align-items:flex-start;gap:8px;color:var(--text-muted);font-size:0.9rem;"><span style="color:var(--cyan);font-size:0.7rem;margin-top:3px;">✓</span> Entry to one scheduled event</li>
+            <li style="display:flex;align-items:flex-start;gap:8px;color:var(--text-muted);font-size:0.9rem;padding-left:20px;"><span style="color:var(--cyan);font-size:0.7rem;margin-top:3px;">✓</span> Full use of stations during the event</li>
+            <li style="display:flex;align-items:flex-start;gap:8px;color:var(--text-muted);font-size:0.9rem;padding-left:20px;"><span style="color:var(--cyan);font-size:0.7rem;margin-top:3px;">✓</span> Access to all event prizes and activities</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERSHIP OPTIONS -->
+  <section>
+    <div class="container">
+      <div class="pricing-wrap">
+        <div class="section-header center">
+          <div class="section-tag">Memberships</div>
+          <h2 class="section-title">Choose Your <span class="gradient-text">Level</span></h2>
+          <p class="section-sub">Uniting players. Building community.</p>
+        </div>
+
+        <div class="pricing-grid reveal" style="grid-template-columns:1fr;max-width:480px;margin:0 auto;">
+
+          <!-- MONTHLY MEMBERSHIP -->
+          <div class="pricing-card featured">
+            <div class="pricing-tier">Monthly Membership</div>
+            <div class="pricing-amount">
+              <span class="currency">$</span>
+              <span class="price">50</span>
+              <span class="period">/ month</span>
+            </div>
+            <p class="pricing-desc">
+              Your all-access pass to Hidden Level. Covers every scheduled public event
+              that month and gives you open access to the cafe outside of private events
+              and dedicated event nights.
+            </p>
+            <ul class="pricing-features">
+              <li><span class="check">✓</span> Unlimited public event entries for the month</li>
+              <li><span class="check">✓</span> Open cafe access during non-event hours</li>
+              <li><span class="check">✓</span> Drop in, play, and hang anytime</li>
+              <li><span class="check" style="color:var(--text-faint);">✗</span> <span style="color:var(--text-faint);">Excludes private events</span></li>
+            </ul>
+            <a href="contact.html" class="btn btn-primary" style="width:100%;justify-content:center;">
+              Become a Member
+            </a>
+          </div>
+
+        </div>
+
+        <!-- PRIVATE EVENT BOOKING -->
+        <div class="card reveal" style="margin-top:32px;border-color:rgba(191,0,255,0.3);background:linear-gradient(135deg,rgba(191,0,255,0.07),var(--bg-card));">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:20px;">
+            <div>
+              <div style="font-family:var(--font-head);font-size:0.6rem;letter-spacing:0.15em;color:#d966ff;text-transform:uppercase;margin-bottom:8px;">Private Booking</div>
+              <h3 style="font-size:1.1rem;color:var(--white);margin-bottom:6px;">Private Event Booking</h3>
+              <p style="color:var(--text-muted);font-size:0.92rem;max-width:480px;">Reserve the entire Hidden Level space for your group celebration. Birthdays, team outings, graduation parties, or any private gathering — fully exclusive, up to 20 guests. You bring the crew, we handle the setup.</p>
+            </div>
+            <div style="text-align:center;flex-shrink:0;">
+              <div style="font-family:var(--font-head);font-size:2.8rem;font-weight:900;color:#d966ff;text-shadow:0 0 20px rgba(191,0,255,0.6);line-height:1;">$150</div>
+              <div style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.1em;color:var(--text-faint);text-transform:uppercase;margin-top:4px;">per hour</div>
+            </div>
+          </div>
+          <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+            <ul style="list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:8px 32px;">
+              <li style="display:flex;align-items:flex-start;gap:8px;color:var(--text-muted);font-size:0.9rem;"><span style="color:#d966ff;font-size:0.7rem;margin-top:3px;">✓</span> Exclusive use of the full cafe</li>
+              <li style="display:flex;align-items:flex-start;gap:8px;color:var(--text-muted);font-size:0.9rem;"><span style="color:#d966ff;font-size:0.7rem;margin-top:3px;">✓</span> All PC stations, consoles, and TV lounge</li>
+              <li style="display:flex;align-items:flex-start;gap:8px;color:var(--text-muted);font-size:0.9rem;"><span style="color:#d966ff;font-size:0.7rem;margin-top:3px;">✓</span> Up to 20 guests</li>
+              <li style="display:flex;align-items:flex-start;gap:8px;color:var(--text-muted);font-size:0.9rem;"><span style="color:#d966ff;font-size:0.7rem;margin-top:3px;">✓</span> Custom game setup and staff on-site</li>
+            </ul>
+            <a href="contact.html" class="btn btn-primary" style="flex-shrink:0;background:linear-gradient(135deg,var(--purple),#d966ff);border:none;">
+              Book Now
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- WHAT'S INCLUDED -->
+  <section>
+    <div class="container">
+      <div class="section-header center">
+        <div class="section-tag">Included With Any Plan</div>
+        <h2 class="section-title">Everything Is <span class="gradient-text">Ready for You</span></h2>
+      </div>
+      <div class="grid-4">
+        <div class="card reveal">
+          <div class="card-icon">🖥️</div>
+          <h3>PC Stations</h3>
+          <p>High-performance gaming rigs with top GPUs and peripherals.</p>
+        </div>
+        <div class="card reveal" style="transition-delay:0.08s">
+          <div class="card-icon">🎮</div>
+          <h3>Console Lounge</h3>
+          <p>PlayStation 5 and Nintendo setups. Couch gaming, your way.</p>
+        </div>
+        <div class="card reveal" style="transition-delay:0.16s">
+          <div class="card-icon">📺</div>
+          <h3>TV Lounge</h3>
+          <p>Big-screen gaming and chill space for casual sessions.</p>
+        </div>
+        <div class="card reveal" style="transition-delay:0.24s">
+          <div class="card-icon">⚡</div>
+          <h3>Fast Networking</h3>
+          <p>Enterprise-grade internet. Low latency across every station.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FAQ -->
+  <section>
+    <div class="container">
+      <div class="section-header center">
+        <div class="section-tag">Questions</div>
+        <h2 class="section-title">Frequently <span class="gradient-text">Asked</span></h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item reveal">
+          <summary>What does the Event Entry / Day Pass include?</summary>
+          <p>
+            Your $10 entry gives you two options: use the PC and console stations outside of
+            any scheduled event, or attend one scheduled event (tournament, date night, LAN
+            party, themed game night, etc.) and get full use of stations, prizes, and
+            activities for that session. No membership required — just walk in and pay.
+          </p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>What does the Monthly Membership include?</summary>
+          <p>
+            The Monthly Membership ($50/mo) is your all-access pass to Hidden Level. It covers every scheduled public event that month — tournaments, date nights, LAN parties, themed game nights, and more — plus open access to the cafe during non-event hours. Excludes private event bookings.
+          </p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>How do I sign up for a membership?</summary>
+          <p>
+            Stop by at 110 E University Ave Suite I, Urbana, IL, reach out via our
+            <a href="contact.html" style="color:var(--cyan)">contact page</a>,
+            call <a href="tel:2174187404" style="color:var(--cyan)">217-418-7404</a>,
+            or join our <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Discord</a>.
+          </p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>How does private event booking work?</summary>
+          <p>
+            Private bookings are $150/hour and give your group exclusive use of the entire
+            Hidden Level space — all PC stations, consoles, and the TV lounge — for up to
+            20 guests. We handle the setup and have staff on-site. Great for birthdays,
+            team outings, graduation parties, and more. Contact us to check availability:
+            use the <a href="contact.html" style="color:var(--cyan)">contact form</a>
+            or call <a href="tel:2174187404" style="color:var(--cyan)">217-418-7404</a>.
+          </p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>Are community events included with my membership?</summary>
+          <p>
+            Monthly Members get unlimited entries to all scheduled public events that month.
+            Check the <a href="calendar.html" style="color:var(--cyan)">events calendar</a>
+            and Discord for the full schedule.
+          </p>
+        </details>
+
+        <details class="faq-item reveal">
+          <summary>What games are available?</summary>
+          <p>
+            A wide library across PC and consoles — competitive titles, fighting games,
+            co-op games, and more. Join our
+            <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Discord</a>
+            for the latest on available titles, or stop in and see for yourself.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <div class="container">
+      <div class="cta-box reveal">
+        <h2>Still Have <span class="gradient-text">Questions?</span></h2>
+        <p>Reach out — we're happy to help. Or just come in and check it out.</p>
+        <div class="btn-group">
+          <a href="contact.html" class="btn btn-primary">Contact Us</a>
+          <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer" class="btn btn-discord">Join Discord</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-wrap -->
+
+<!-- ══ FOOTER ═══════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <span class="mark">HL</span>
+          HIDDEN <span class="accent">LEVEL</span>
+        </div>
+        <p>Urbana-Champaign's gaming destination. PC stations, consoles, community events, and a space to belong.</p>
+        <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer"
+           class="btn btn-discord" style="font-size:0.65rem;padding:10px 20px;">
+          Join Our Discord
+        </a>
+      </div>
+      <div class="footer__col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="calendar.html">Events</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <address>
+          <a href="https://maps.google.com/?q=110+E+University+Ave+Urbana+IL" target="_blank" rel="noopener noreferrer">
+            110 E University Ave<br />Suite I, Urbana IL
+          </a><br /><br />
+          <a href="tel:2174187404">217-418-7404</a><br />
+          <a href="mailto:Hiddenlevelcu@gmail.com">Hiddenlevelcu@gmail.com</a>
+        </address>
+      </div>
+      <div class="footer__col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
+          <li><a href="calendar.html">Better Together Night</a></li>
+          <li><a href="calendar.html">Family Game Night</a></li>
+          <li><a href="contact.html">Private Bookings</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2026 Hidden Level Cyber Cafe · Urbana, IL</p>
+      <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer" class="footer__discord">
+        💬 Join Our Discord
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js?v=4"></script>
+</body>
+</html>

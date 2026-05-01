@@ -1,0 +1,13 @@
+{
+  "name": "hlcc",
+  "version": "1.0.0",
+  "description": "Hidden Level Cyber Cafe website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemailer": "^6.9.9"
+  }
+}

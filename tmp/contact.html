@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | Hidden Level Cyber Cafe</title>
+  <meta name="description" content="Contact Hidden Level Cyber Cafe — call, text, email, or join our Discord. Located at 110 E University Ave Suite I, Urbana, IL." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="contact">
+
+<!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="mark">HL</span>
+      HIDDEN <span class="accent">LEVEL</span>
+    </a>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="about.html" data-page="about">About</a></li>
+      <li><a href="calendar.html" data-page="calendar">Events</a></li>
+      <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
+      <li><a href="contact.html" data-page="contact">Contact</a></li>
+      <li>
+        <a href="https://discord.gg/w6xh7fzxr3"
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn-discord" style="padding:8px 16px;font-size:0.65rem;">
+          Join Discord
+        </a>
+      </li>
+    </ul>
+    <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <span class="eyebrow">Reach Out</span>
+    <h1>Contact Us</h1>
+    <p>Questions, private bookings, memberships — we're easy to reach. Drop us a message or swing by.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT LAYOUT -->
+  <section>
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- LEFT: Contact info -->
+        <div>
+          <div class="section-tag" style="margin-bottom:24px;">Get In Touch</div>
+          <div class="contact-info-stack">
+
+            <a href="tel:2174187404" class="contact-tile">
+              <div class="contact-tile__icon">📞</div>
+              <div class="contact-tile__body">
+                <span class="contact-tile__label">Call or Text</span>
+                <span class="contact-tile__val">217-418-7404</span>
+              </div>
+            </a>
+
+            <a href="mailto:Hiddenlevelcu@gmail.com" class="contact-tile">
+              <div class="contact-tile__icon">✉️</div>
+              <div class="contact-tile__body">
+                <span class="contact-tile__label">Email</span>
+                <span class="contact-tile__val">Hiddenlevelcu@gmail.com</span>
+              </div>
+            </a>
+
+            <a href="https://maps.google.com/?q=110+E+University+Ave+Urbana+IL"
+               target="_blank" rel="noopener noreferrer"
+               class="contact-tile">
+              <div class="contact-tile__icon">📍</div>
+              <div class="contact-tile__body">
+                <span class="contact-tile__label">Location</span>
+                <span class="contact-tile__val">110 E University Ave, Suite I<br />Urbana, IL</span>
+              </div>
+            </a>
+
+            <a href="https://discord.gg/w6xh7fzxr3"
+               target="_blank" rel="noopener noreferrer"
+               class="contact-tile">
+              <div class="contact-tile__icon">💬</div>
+              <div class="contact-tile__body">
+                <span class="contact-tile__label">Discord Community</span>
+                <span class="contact-tile__val">discord.gg/w6xh7fzxr3</span>
+              </div>
+            </a>
+
+          </div>
+
+          <!-- Discord CTA card -->
+          <div class="card reveal" style="margin-top:24px;background:linear-gradient(135deg,rgba(88,101,242,0.12),rgba(0,229,255,0.06));border-color:rgba(88,101,242,0.3);">
+            <div style="font-size:1.4rem;margin-bottom:12px;">🎮</div>
+            <h3 style="color:var(--white);">Join the Community</h3>
+            <p>
+              For the fastest responses, event updates, and general chat —
+              our Discord is the best place to be.
+            </p>
+            <a href="https://discord.gg/w6xh7fzxr3"
+               target="_blank" rel="noopener noreferrer"
+               class="btn btn-discord"
+               style="margin-top:16px;font-size:0.65rem;padding:10px 20px;">
+              Join Discord
+            </a>
+          </div>
+        </div>
+
+        <!-- RIGHT: Contact form -->
+        <div class="reveal">
+          <div class="contact-form-card" id="contact-form-wrap">
+            <h3>Send a Message</h3>
+
+            <form id="contact-form" novalidate>
+              <div class="grid-2" style="gap:16px;">
+                <div class="form-group">
+                  <label for="f-name">Name</label>
+                  <input type="text" id="f-name" name="name" placeholder="Your name" required autocomplete="name" />
+                </div>
+                <div class="form-group">
+                  <label for="f-email">Email</label>
+                  <input type="email" id="f-email" name="email" placeholder="your@email.com" required autocomplete="email" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="f-subject">What's this about?</label>
+                <select id="f-subject" name="subject" onchange="toggleBookingFields()">
+                  <option value="">Select a topic…</option>
+                  <option value="general">General Question</option>
+                  <option value="booking">Private Booking</option>
+                  <option value="membership">Membership</option>
+                  <option value="event">Event Info</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <!-- Extra fields for private bookings -->
+              <div id="booking-fields" style="display:none;">
+                <div class="grid-2" style="gap:16px;">
+                  <div class="form-group">
+                    <label for="f-booking-date">Preferred Date</label>
+                    <input type="date" id="f-booking-date" name="bookingDate" />
+                  </div>
+                  <div class="form-group">
+                    <label for="f-booking-time">Preferred Time</label>
+                    <input type="text" id="f-booking-time" name="bookingTime" placeholder="e.g. 6pm–9pm" />
+                  </div>
+                </div>
+                <div class="grid-2" style="gap:16px;">
+                  <div class="form-group">
+                    <label for="f-booking-guests">Expected Guests</label>
+                    <input type="number" id="f-booking-guests" name="bookingGuests" placeholder="Up to 20" min="1" max="20" />
+                  </div>
+                  <div class="form-group">
+                    <label for="f-booking-type">Occasion</label>
+                    <select id="f-booking-type" name="bookingType">
+                      <option value="">Select…</option>
+                      <option value="Birthday Party">Birthday Party</option>
+                      <option value="Team Outing">Team Outing</option>
+                      <option value="Graduation Party">Graduation Party</option>
+                      <option value="Private Tournament">Private Tournament</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+                <p style="font-size:0.8rem;color:var(--text-faint);margin-bottom:8px;">Private bookings are $150/hr for up to 20 guests. We'll confirm availability and follow up with you directly.</p>
+              </div>
+
+              <div class="form-group">
+                <label for="f-msg">Message</label>
+                <textarea id="f-msg" name="message" placeholder="Tell us what's on your mind…" required></textarea>
+              </div>
+
+              <div id="form-error" style="display:none;color:#ff6060;font-size:0.84rem;margin-top:8px;"></div>
+
+              <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                Send Message
+              </button>
+            </form>
+
+            <div id="form-success" class="form-success" role="alert" style="display:none;">
+              ✓ &nbsp; Message received! We'll get back to you soon.
+              <br /><br />
+              <span style="font-size:0.85rem;text-transform:none;letter-spacing:0;font-family:var(--font-body);color:var(--text-muted);">
+                For quicker responses, join our
+                <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Discord</a>
+                or call <a href="tel:2174187404" style="color:var(--cyan)">217-418-7404</a>.
+              </span>
+            </div>
+          </div>
+
+          <!-- Note about form -->
+          <p style="margin-top:14px;color:var(--text-faint);font-size:0.82rem;text-align:center;">
+            We aim to respond within 24 hours. For urgent questions, call or text us directly.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- MAP SECTION -->
+  <section style="padding:64px 0;">
+    <div class="container">
+      <div class="section-header center">
+        <div class="section-tag">Find Us</div>
+        <h2 class="section-title">We're on <span class="gradient-text">University Ave</span></h2>
+        <p class="section-sub">
+          Located right on University Ave in Urbana. Easy to find, easy to get to.
+        </p>
+      </div>
+
+      <div class="card reveal" style="padding:0;overflow:hidden;">
+        <iframe
+          title="Hidden Level Cyber Cafe location map"
+          src="https://maps.google.com/maps?q=110+E+University+Ave+Urbana+IL&output=embed"
+          width="100%"
+          height="380"
+          style="border:0;display:block;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
+      <div class="grid-3" style="margin-top:20px;">
+        <div class="card card-accent-l cyan reveal">
+          <h3>Address</h3>
+          <p>110 E University Ave<br />Suite I, Urbana, IL</p>
+        </div>
+        <div class="card card-accent-l reveal" style="transition-delay:0.1s">
+          <h3>Call or Text</h3>
+          <p><a href="tel:2174187404" style="color:var(--cyan);">217-418-7404</a></p>
+        </div>
+        <div class="card card-accent-l green reveal" style="transition-delay:0.2s">
+          <h3>Discord</h3>
+          <p>
+            <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer"
+               style="color:var(--cyan);">discord.gg/w6xh7fzxr3</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-wrap -->
+
+<!-- ══ FOOTER ═══════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <span class="mark">HL</span>
+          HIDDEN <span class="accent">LEVEL</span>
+        </div>
+        <p>Urbana-Champaign's gaming destination. PC stations, consoles, community events, and a space to belong.</p>
+        <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer"
+           class="btn btn-discord" style="font-size:0.65rem;padding:10px 20px;">
+          Join Our Discord
+        </a>
+      </div>
+      <div class="footer__col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="calendar.html">Events</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <address>
+          <a href="https://maps.google.com/?q=110+E+University+Ave+Urbana+IL" target="_blank" rel="noopener noreferrer">
+            110 E University Ave<br />Suite I, Urbana IL
+          </a><br /><br />
+          <a href="tel:2174187404">217-418-7404</a><br />
+          <a href="mailto:Hiddenlevelcu@gmail.com">Hiddenlevelcu@gmail.com</a>
+        </address>
+      </div>
+      <div class="footer__col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
+          <li><a href="calendar.html">Better Together Night</a></li>
+          <li><a href="calendar.html">Family Game Night</a></li>
+          <li><a href="contact.html">Private Bookings</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2026 Hidden Level Cyber Cafe · Urbana, IL</p>
+      <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer" class="footer__discord">
+        💬 Join Our Discord
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js?v=4"></script>
+</body>
+</html>

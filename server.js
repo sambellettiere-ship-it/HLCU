@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = process.env.DATA_DIR
   ? path.resolve(process.env.DATA_DIR)
-  : path.join(__dirname, 'data');
+  : '/data/hlcc-volume';
 const EVENTS_FILE = path.join(DATA_DIR, 'events.json');
 const RECURRING_FILE = path.join(DATA_DIR, 'recurring.json');
 const PLAYERS_FILE = path.join(DATA_DIR, 'players.json');

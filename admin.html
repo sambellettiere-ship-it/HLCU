@@ -775,6 +775,7 @@ function renderList() {
           ${ev.description ? `<div class="event-desc">${esc(ev.description)}</div>` : ''}
         </div>
         <div class="event-actions">
+          <button class="btn btn-sm" style="margin-right: 4px; background: #22c55e; color: #000;" onclick="viewEventRegs('${esc(ev.id)}', '${esc(ev.title)}')">Regs</button>
           <button class="btn btn-sm" style="margin-right: 4px; background: var(--cyan); color: #000;" onclick="editEventSetup('${esc(ev.id)}')">Edit</button>
           <button class="btn btn-sm btn-danger" onclick="deleteEvent('${esc(ev.id)}')">Delete</button>
         </div>
@@ -936,6 +937,7 @@ function renderRecurring() {
           ${r.description ? `<div class="event-desc">${esc(r.description)}</div>` : ''}
         </div>
         <div class="event-actions">
+          <button class="btn btn-sm" style="margin-right: 4px; background: #22c55e; color: #000;" onclick="viewEventRegs('${esc(r.id)}', '${esc(r.title)}')">Regs</button>
           <button class="btn btn-sm" style="margin-right: 4px; background: var(--cyan); color: #000;" onclick="editRecurringSetup('${esc(r.id)}')">Edit</button>
           <button class="btn btn-sm btn-danger" onclick="deleteRecurring('${esc(r.id)}')">Delete</button>
         </div>
@@ -1252,6 +1254,71 @@ async function deleteLbEntry(id) {
     await fetch('/api/admin/leaderboard/'+encodeURIComponent(id), {method:'DELETE', headers:{Authorization:authHeader()}});
     loadAdminData();
   } catch(e) { alert('Error'); }
+}
+
+let currentRegsModal = null;
+
+async function viewEventRegs(eventId, title) {
+  let modal = document.getElementById('regs-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'regs-modal';
+    modal.style.cssText = `
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center; z-index: 1000;
+    `;
+    modal.innerHTML = `
+      <div class="card fade-in" style="width: 100%; max-width: 500px; max-height: 80vh; overflow-y: auto; background: var(--bg); border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+        <div class="card-header" style="justify-content: space-between; position: sticky; top: -32px; background: var(--bg); margin-top:-32px; padding-top:32px; z-index:2;">
+          <div class="card-title" id="regs-modal-title">Registrations</div>
+          <button class="btn btn-sm" onclick="closeRegsModal()" style="background:transparent; border:1px solid var(--muted); color:var(--muted)">Close</button>
+        </div>
+        <div id="regs-modal-list" style="margin-top: 16px;">Loading...</div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+  
+  modal.style.display = 'flex';
+  document.getElementById('regs-modal-title').textContent = 'Registrations: ' + title;
+  const listEl = document.getElementById('regs-modal-list');
+  listEl.innerHTML = '<div class="empty">Loading...</div>';
+  
+  try {
+    const res = await fetch('/api/admin/events/' + encodeURIComponent(eventId) + '/registrations', {
+      headers: { Authorization: authHeader() }
+    });
+    if(!res.ok) throw new Error();
+    const regs = await res.json();
+    
+    if (regs.length === 0) {
+      listEl.innerHTML = '<div class="empty">No registrations yet.</div>';
+    } else {
+      listEl.innerHTML = regs.map(r => {
+        let dateInfo = '';
+        if (r.eventId !== eventId) { // It's a recurring event specific date
+          const parts = r.eventId.split('_');
+          const dateStr = parts[parts.length - 1];
+          dateInfo = `<div style="font-size:0.75rem; color:var(--cyan); margin-top:2px;">Occurrence: ${dateStr}</div>`;
+        }
+        return `
+          <div style="padding: 12px; border-bottom: 1px solid var(--border);">
+            <div style="font-weight: 600; color: #fff;">${esc(r.username)}</div>
+            <div style="font-size: 0.8rem; color: var(--muted);">${esc(r.email)}</div>
+            ${dateInfo}
+          </div>
+        `;
+      }).join('');
+    }
+  } catch(e) {
+    listEl.innerHTML = '<div class="empty" style="color:var(--primary)">Failed to load.</div>';
+  }
+}
+
+function closeRegsModal() {
+  const modal = document.getElementById('regs-modal');
+  if (modal) modal.style.display = 'none';
 }
 </script>
 </body>

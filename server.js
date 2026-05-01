@@ -216,6 +216,26 @@ app.get('/api/admin/ping', (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/api/admin/events/:id/registrations', (req, res) => {
+  if (!checkAuth(req, res)) return;
+  const regs = readJSON(REGISTRATIONS_FILE, []);
+  const users = readJSON(USERS_FILE, []);
+  
+  const id = req.params.id;
+  const eventRegs = regs.filter(r => r.eventId === id || r.eventId.startsWith(id + '_'));
+  const populated = eventRegs.map(r => {
+    const u = users.find(user => user.id === r.userId);
+    return {
+      eventId: r.eventId,
+      userId: r.userId,
+      registeredAt: r.registeredAt,
+      username: u ? u.username : 'Unknown',
+      email: u ? u.email : 'Unknown'
+    };
+  });
+  res.json(populated);
+});
+
 // ── Events ────────────────────────────────────────────────────
 app.get('/api/events', (req, res) => {
   res.json(readJSON(EVENTS_FILE, []));

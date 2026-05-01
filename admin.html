@@ -1010,7 +1010,7 @@ function renderGames() {
         <div class="event-title">${esc(g.name)}</div>
         <div class="event-desc">Stats: ${esc(g.stats.map(s => s.label).join(', '))}</div>
       </div>
-      <div class="event-actions"><button class="btn btn-sm btn-danger" onclick="deleteGame('${esc(g.id}')">Del</button></div>
+      <div class="event-actions"><button class="btn btn-sm btn-danger" onclick="deleteGame('${esc(g.id)}')">Del</button></div>
     </div>
   `).join('');
 }

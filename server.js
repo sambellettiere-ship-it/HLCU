@@ -191,7 +191,6 @@ app.delete('/api/recurring/:id', (req, res) => {
 });
 
 // ── Leaderboard (Admin Managed) ───────────────────────────────
-const PLAYERS_FILE = path.join(DATA_DIR, 'players.json');
 const GAMES_FILE = path.join(DATA_DIR, 'games.json');
 const LEADERBOARD_FILE = path.join(DATA_DIR, 'leaderboard.json');
 

@@ -11,8 +11,10 @@ const DATA_DIR = process.env.DATA_DIR
   ? path.resolve(process.env.DATA_DIR)
   : '/data/hlcc-volume';
 const EVENTS_FILE = path.join(DATA_DIR, 'events.json');
+const REGISTRATIONS_FILE = path.join(DATA_DIR, 'registrations.json');
 const RECURRING_FILE = path.join(DATA_DIR, 'recurring.json');
 const PLAYERS_FILE = path.join(DATA_DIR, 'players.json');
+const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const OWNER_EMAIL = process.env.NOTIFY_EMAIL || 'hiddenlevelcu@gmail.com';
 
 app.use(express.json());
@@ -85,6 +87,128 @@ function checkAuth(req, res) {
   }
   return true;
 }
+
+// ── User Auth & Captcha ───────────────────────────────────────
+const captchas = new Map();
+
+app.get('/api/auth/captcha', (req, res) => {
+  const d1 = Math.floor(Math.random() * 10) + 1;
+  const d2 = Math.floor(Math.random() * 10) + 1;
+  const operators = ['+', '-', '*'];
+  const op = operators[Math.floor(Math.random() * operators.length)];
+  let ans = 0;
+  if(op === '+') ans = d1 + d2;
+  if(op === '-') ans = d1 - d2;
+  if(op === '*') ans = d1 * d2;
+  
+  const id = crypto.randomUUID();
+  captchas.set(id, { ans: ans.toString(), expires: Date.now() + 5*60000 });
+  res.json({ id, text: `What is ${d1} ${op} ${d2}?` });
+});
+
+app.post('/api/auth/signup', (req, res) => {
+  const { username, email, password, captchaId, captchaAnswer } = req.body;
+  if (!username || !email || !password || !captchaId || !captchaAnswer) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+  const captcha = captchas.get(captchaId);
+  if (!captcha || captcha.expires < Date.now() || captcha.ans !== captchaAnswer.trim()) {
+    if (captcha) captchas.delete(captchaId);
+    return res.status(400).json({ error: 'Invalid or expired captcha' });
+  }
+  captchas.delete(captchaId);
+  
+  const users = readJSON(USERS_FILE, []);
+  if (users.find(u => u.email.toLowerCase() === email.toLowerCase() || u.username.toLowerCase() === username.toLowerCase())) {
+     return res.status(400).json({ error: 'Username or email already in use' });
+  }
+  
+  const id = Date.now().toString();
+  const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+  
+  const newUser = { id, username: username.trim(), email: email.trim().toLowerCase(), passwordHash, createdAt: new Date().toISOString() };
+  users.push(newUser);
+  writeJSON(USERS_FILE, users);
+  
+  const players = readJSON(PLAYERS_FILE, []);
+  if (!players.find(p => p.name.toLowerCase() === username.trim().toLowerCase())) {
+     players.push({ id, name: username.trim(), userId: id });
+     writeJSON(PLAYERS_FILE, players);
+  }
+  
+  res.json({ success: true, username: newUser.username });
+});
+
+app.post('/api/auth/login', (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password required' });
+  }
+  const users = readJSON(USERS_FILE, []);
+  const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+  
+  const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.passwordHash === passwordHash);
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+  const tokenPayload = Buffer.from(JSON.stringify({ userId: user.id })).toString('base64');
+  const tokenSig = crypto.createHash('sha256').update(tokenPayload + process.env.ADMIN_PASSWORD).digest('base64');
+  res.json({ token: tokenPayload + '.' + tokenSig, username: user.username });
+});
+
+// ── Event Registrations ───────────────────────────────────────
+app.get('/api/registrations/:id', (req, res) => {
+  const authMsg = req.headers.authorization;
+  if (!authMsg) return res.json({ registered: false });
+  // Just decode token naive for this prototype (admin is basic, users use jwt-like payload)
+  let userId = null;
+  if (authMsg.startsWith('Bearer ')) {
+    try {
+      const parts = authMsg.substring(7).split('.');
+      if (parts.length === 2) {
+        const payload = JSON.parse(Buffer.from(parts[0], 'base64').toString());
+        userId = payload.userId;
+      }
+    } catch { }
+  }
+  if (!userId) return res.json({ registered: false });
+  
+  const regs = readJSON(REGISTRATIONS_FILE, []);
+  const exists = regs.find(r => r.eventId === req.params.id && r.userId === userId);
+  res.json({ registered: !!exists });
+});
+
+app.post('/api/registrations/:id', (req, res) => {
+  const authMsg = req.headers.authorization;
+  if (!authMsg || !authMsg.startsWith('Bearer ')) return res.status(401).json({ error: 'Log in to register' });
+  
+  let userId = null;
+  try {
+    const parts = authMsg.substring(7).split('.');
+    if (parts.length === 2) {
+      const payload = JSON.parse(Buffer.from(parts[0], 'base64').toString());
+      userId = payload.userId;
+    }
+  } catch { }
+  if (!userId) return res.status(401).json({ error: 'Invalid token' });
+  
+  const regs = readJSON(REGISTRATIONS_FILE, []);
+  const existing = regs.find(r => r.eventId === req.params.id && r.userId === userId);
+  
+  if (req.body.register) {
+    if (!existing) {
+      regs.push({ eventId: req.params.id, userId, registeredAt: new Date().toISOString() });
+      writeJSON(REGISTRATIONS_FILE, regs);
+    }
+    res.json({ registered: true });
+  } else {
+    if (existing) {
+      const filtered = regs.filter(r => !(r.eventId === req.params.id && r.userId === userId));
+      writeJSON(REGISTRATIONS_FILE, filtered);
+    }
+    res.json({ registered: false });
+  }
+});
 
 // ── Admin ping ────────────────────────────────────────────────
 app.get('/api/admin/ping', (req, res) => {

@@ -26,6 +26,7 @@
       <li><a href="calendar.html" data-page="calendar">Events</a></li>
       <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
       <li><a href="contact.html" data-page="contact">Contact</a></li>
+      <li><a href="account.html" data-page="account">Account</a></li>
       <li>
         <a href="https://discord.gg/w6xh7fzxr3"
            target="_blank" rel="noopener noreferrer"
@@ -154,7 +155,8 @@
         <p class="event-modal__desc" id="modal-desc"></p>
       </div>
 
-      <div class="event-modal__cta">
+      <div class="event-modal__cta" id="modal-cta-buttons">
+        <button id="modal-register-btn" class="btn" style="display:none; border:2px solid var(--primary); background:transparent; color:var(--primary)" onclick="toggleRegistration()">Register for Event</button>
         <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer"
            class="btn btn-discord">
           Join Discord for Details
@@ -163,6 +165,7 @@
           Contact Us
         </a>
       </div>
+      <div id="modal-registration-msg" class="msg" style="display:none;margin-top:10px;"></div>
     </div>
   </div>
 </div>

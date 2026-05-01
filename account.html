@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Account | Hidden Level Cyber Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    main { padding: 80px 1rem; min-height: 70vh; display: flex; align-items: center; justify-content: center; }
+    .auth-card {
+      background: var(--bg-card); border-top: 2px solid var(--primary);
+      border-radius: 8px; padding: 32px; width: 100%; max-width: 400px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .auth-card h1 { font-family: var(--font-head); font-size: 1.5rem; text-transform: uppercase; margin-bottom: 24px; text-align: center; color: var(--primary); }
+    
+    .tabs { display: flex; gap: 16px; margin-bottom: 24px; }
+    .tab {
+      flex: 1; padding: 8px 0; text-align: center; border-bottom: 2px solid var(--border);
+      color: var(--text-muted); font-family: var(--font-head); font-size: 0.9rem; text-transform: uppercase; cursor: pointer; transition: 0.2s;
+    }
+    .tab.active { color: var(--text); border-bottom-color: var(--primary); }
+
+    label { display: block; font-family: var(--font-head); font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+    input {
+      width: 100%; background: #000; border: 1px solid var(--border); color: #fff;
+      padding: 12px; font-family: var(--font-body); font-size: 1rem; border-radius: 4px; margin-bottom: 16px; transition: border-color 0.2s;
+    }
+    input:focus { outline: none; border-color: var(--primary); }
+    
+    .btn-submit {
+      width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px; font-family: var(--font-head); font-size: 1rem; text-transform: uppercase; cursor: pointer; letter-spacing: 0.05em; border-radius: 4px; transition: 0.2s; margin-top: 8px;
+    }
+    .btn-submit:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+    .msg { padding: 12px; border-radius: 4px; font-weight: 500; font-size: 0.9rem; display: none; margin-top: 16px; text-align: center; }
+    .msg.error { background: rgba(242, 19, 45, 0.1); border: 1px solid var(--primary); color: var(--primary); }
+    .msg.success { background: rgba(0, 240, 255, 0.1); border: 1px solid var(--cyan); color: var(--cyan); }
+    
+    .captcha-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    #captcha-text { background: #000; padding: 10px 16px; border-radius: 4px; border: 1px dashed var(--text-muted); font-family: var(--font-head); color: var(--cyan); letter-spacing: 0.1em; display: inline-block; white-space: nowrap; }
+
+    #logged-in-view { display: none; text-align: center; }
+    #logged-in-view h2 { margin-bottom: 16px; font-family: var(--font-head); color: var(--cyan); }
+    .btn-logout { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px 16px; font-family: var(--font-head); cursor: pointer; border-radius: 4px; transition: 0.2s; text-transform: uppercase; font-size: 0.8rem; }
+    .btn-logout:hover { background: var(--primary); color: #000; }
+  </style>
+</head>
+<body data-page="account">
+
+  <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <span class="mark">HL</span>
+        HIDDEN <span class="accent">LEVEL</span>
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html" data-page="home">Home</a></li>
+        <li><a href="about.html" data-page="about">About</a></li>
+        <li><a href="leaderboard.html" data-page="leaderboard">Leaderboard</a></li>
+        <li><a href="calendar.html" data-page="calendar">Events</a></li>
+        <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
+        <li><a href="contact.html" data-page="contact">Contact</a></li>
+        <li><a href="account.html" data-page="account">Account</a></li>
+        <li>
+          <a href="https://discord.gg/w6xh7fzxr3"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn-discord" style="padding:8px 16px;font-size:0.65rem;">
+            Join Discord
+          </a>
+        </li>
+      </ul>
+      <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+  <main>
+    
+    <!-- AUTH VIEW -->
+    <div class="auth-card" id="auth-view">
+      <h1>Account</h1>
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('login')" id="tab-login">Login</div>
+        <div class="tab" onclick="switchTab('signup')" id="tab-signup">Register</div>
+      </div>
+
+      <div id="form-login">
+        <label for="l-user">Username</label>
+        <input type="text" id="l-user" placeholder="Enter username" />
+        <label for="l-pass">Password</label>
+        <input type="password" id="l-pass" placeholder="Enter password" />
+        <button class="btn-submit" onclick="doLogin()">Login</button>
+      </div>
+
+      <div id="form-signup" style="display: none;">
+        <label for="s-user">Username</label>
+        <input type="text" id="s-user" placeholder="Choose a gamertag" />
+        <label for="s-email">Email</label>
+        <input type="email" id="s-email" placeholder="Enter your email" />
+        <label for="s-pass">Password</label>
+        <input type="password" id="s-pass" placeholder="Create a password" />
+        
+        <label>Verification</label>
+        <div class="captcha-row">
+          <div id="captcha-text">Loading...</div>
+          <input type="number" id="s-captcha" placeholder="?" style="margin-bottom:0; flex:1;" />
+        </div>
+
+        <button class="btn-submit" onclick="doSignup()">Create Account</button>
+      </div>
+      
+      <div id="msg" class="msg"></div>
+    </div>
+
+    <!-- LOGGED IN VIEW -->
+    <div class="card" id="logged-in-view">
+      <h2 id="welcome-text">Welcome, User</h2>
+      <p style="color:var(--text-muted); margin-bottom: 24px; font-size: 0.95rem;">You are signed in and ready to climb the leaderboards!</p>
+      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+
+  </main>
+
+  <script>
+    let captchaId = null;
+
+    function showMsg(type, text) {
+      const el = document.getElementById('msg');
+      el.textContent = text;
+      el.className = 'msg ' + type;
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 4000);
+    }
+
+    function switchTab(tab) {
+      document.getElementById('msg').style.display = 'none';
+      if (tab === 'login') {
+        document.getElementById('tab-login').classList.add('active');
+        document.getElementById('tab-signup').classList.remove('active');
+        document.getElementById('form-login').style.display = 'block';
+        document.getElementById('form-signup').style.display = 'none';
+      } else {
+        document.getElementById('tab-signup').classList.add('active');
+        document.getElementById('tab-login').classList.remove('active');
+        document.getElementById('form-signup').style.display = 'block';
+        document.getElementById('form-login').style.display = 'none';
+        loadCaptcha(); // load fresh captcha
+      }
+    }
+
+    async function loadCaptcha() {
+      try {
+        document.getElementById('captcha-text').textContent = '...';
+        const res = await fetch('/api/auth/captcha');
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        captchaId = data.id;
+        document.getElementById('captcha-text').textContent = data.text;
+      } catch (err) {
+        document.getElementById('captcha-text').textContent = 'Error';
+      }
+    }
+
+    async function doSignup() {
+      const username = document.getElementById('s-user').value.trim();
+      const email = document.getElementById('s-email').value.trim();
+      const password = document.getElementById('s-pass').value;
+      const captchaAnswer = document.getElementById('s-captcha').value.trim();
+      
+      if(!username || !email || !password || !captchaAnswer) {
+        showMsg('error', 'Please fill all fields'); return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({username, email, password, captchaId, captchaAnswer})
+        });
+        const data = await res.json();
+        if(!res.ok) {
+          showMsg('error', data.error || 'Signup failed');
+          loadCaptcha();
+          document.getElementById('s-captcha').value = '';
+          return;
+        }
+        showMsg('success', 'Account created! Please log in.');
+        setTimeout(() => switchTab('login'), 1500);
+      } catch (e) { showMsg('error', 'Network error'); }
+    }
+
+    async function doLogin() {
+      const username = document.getElementById('l-user').value.trim();
+      const password = document.getElementById('l-pass').value;
+      
+      if(!username || !password) { showMsg('error', 'Please enter credentials'); return; }
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({username, password})
+        });
+        const data = await res.json();
+        if(!res.ok) { showMsg('error', data.error || 'Login failed'); return; }
+        
+        localStorage.setItem('hl_user_token', data.token);
+        localStorage.setItem('hl_username', data.username);
+        checkSession();
+      } catch(e) { showMsg('error', 'Network error'); }
+    }
+
+    function doLogout() {
+      localStorage.removeItem('hl_user_token');
+      localStorage.removeItem('hl_username');
+      checkSession();
+    }
+
+    function checkSession() {
+      const user = localStorage.getItem('hl_username');
+      if (user) {
+        document.getElementById('auth-view').style.display = 'none';
+        document.getElementById('logged-in-view').style.display = 'block';
+        document.getElementById('welcome-text').textContent = 'Welcome, ' + user;
+      } else {
+        document.getElementById('auth-view').style.display = 'block';
+        document.getElementById('logged-in-view').style.display = 'none';
+      }
+    }
+
+    checkSession();
+  </script>
+  </div> <!-- /page-wrap -->
+
+  <!-- ══ FOOTER ═══════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <div class="footer__logo">
+            <span class="mark">HL</span>
+            HIDDEN <span class="accent">LEVEL</span>
+          </div>
+          <p>Urbana-Champaign's gaming destination. PC stations, consoles, community events, and a space to belong.</p>
+          <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer"
+             class="btn btn-discord" style="font-size:0.65rem;padding:10px 20px;">
+            Join Our Discord
+          </a>
+        </div>
+        <div class="footer__col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="calendar.html">Events</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Contact</h4>
+          <address>
+            <a href="https://maps.google.com/?q=110+E+University+Ave+Urbana+IL" target="_blank" rel="noopener noreferrer">
+              110 E University Ave<br />Suite I, Urbana IL
+            </a><br /><br />
+            <a href="tel:2174187404">217-418-7404</a><br />
+            <a href="mailto:Hiddenlevelcu@gmail.com">Hiddenlevelcu@gmail.com</a>
+          </address>
+        </div>
+        <div class="footer__col">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
+            <li><a href="calendar.html">Better Together Night</a></li>
+            <li><a href="calendar.html">Family Game Night</a></li>
+            <li><a href="contact.html">Private Bookings</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 Hidden Level Cyber Cafe · Urbana, IL</p>
+        <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer" class="footer__discord">
+          💬 Join Our Discord
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js?v=6"></script>
+</body>
+</html>

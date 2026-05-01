@@ -154,6 +154,7 @@
         if (!ruleMatches(rule, year, month, d, dow, daysInMonth)) return;
         const timeStr = rule.startTime ? (rule.endTime ? `${rule.startTime}–${rule.endTime}` : rule.startTime) : '';
         pills += pill(rule.type, rule.title, timeStr, {
+          id: rule.id + '_' + dateKey,
           title: rule.title, type: rule.type, date: dateKey,
           startTime: rule.startTime || '', endTime: rule.endTime || '',
           description: rule.description || '',
@@ -257,10 +258,80 @@ function renderUpcoming(list) {
   });
 }
 
+let currentModalEventId = null;
+let isRegistered = false;
+
+async function checkRegistration(eventId) {
+  const token = localStorage.getItem('hl_user_token');
+  const btn = document.getElementById('modal-register-btn');
+  const msg = document.getElementById('modal-registration-msg');
+  if(!btn) return;
+  msg.style.display = 'none';
+  if (!token) {
+    btn.style.display = 'none';
+    return;
+  }
+  btn.style.display = 'inline-block';
+  btn.textContent = '...';
+  try {
+    const res = await fetch('/api/registrations/' + encodeURIComponent(eventId), {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if(res.ok) {
+      const data = await res.json();
+      isRegistered = data.registered;
+      btn.textContent = isRegistered ? 'Unregister from Event' : 'Register for Event';
+      btn.style.color = isRegistered ? '#f2132d' : 'var(--cyan)';
+      btn.style.borderColor = isRegistered ? '#f2132d' : 'var(--cyan)';
+    } else {
+      btn.style.display = 'none';
+    }
+  } catch(e) {
+    btn.style.display = 'none';
+  }
+}
+
+async function toggleRegistration() {
+  if(!currentModalEventId) return;
+  const token = localStorage.getItem('hl_user_token');
+  const btn = document.getElementById('modal-register-btn');
+  const msg = document.getElementById('modal-registration-msg');
+  if(!token) return;
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/registrations/' + encodeURIComponent(currentModalEventId), {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ register: !isRegistered })
+    });
+    if(res.ok) {
+      const data = await res.json();
+      isRegistered = data.registered;
+      btn.textContent = isRegistered ? 'Unregister from Event' : 'Register for Event';
+      btn.style.color = isRegistered ? '#f2132d' : 'var(--cyan)';
+      btn.style.borderColor = isRegistered ? '#f2132d' : 'var(--cyan)';
+      msg.textContent = isRegistered ? 'Successfully registered! Please pay in person at the store.' : 'Successfully unregistered.';
+      msg.className = 'msg success';
+      msg.style.display = 'block';
+    } else {
+      throw new Error();
+    }
+  } catch(e) {
+    msg.textContent = 'An error occurred.';
+    msg.className = 'msg error';
+    msg.style.display = 'block';
+  }
+  btn.disabled = false;
+  setTimeout(() => { if(msg) msg.style.display = 'none'; }, 5000);
+}
+
 /* ── Event detail modal ── */
 function openEventModal(ev) {
   const modal = document.getElementById('event-modal');
   if (!modal) return;
+  
+  currentModalEventId = ev.id || (ev.title + '_' + ev.date).replace(/[^a-zA-Z0-9]/g, '');
+  checkRegistration(currentModalEventId);
 
   const badge = document.getElementById('modal-badge');
   badge.textContent = ev.type;

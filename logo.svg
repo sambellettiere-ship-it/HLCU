@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#090a0f"/>
+  <rect x="32" y="32" width="448" height="448" fill="none" stroke="#00e5ff" stroke-width="24" rx="24"/>
+  <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="-apple-system, system-ui, sans-serif" font-size="240" font-weight="900" fill="#00e5ff" letter-spacing="-10">HL</text>
+</svg>

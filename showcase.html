@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Community Showcase | Hidden Level Cyber Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .showcase-header {
+      text-align: center;
+      padding: 60px 1rem 20px;
+      margin-bottom: 20px;
+    }
+    .showcase-header h1 {
+      font-family: var(--font-head);
+      font-weight: 900;
+      font-size: 3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    .showcase-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+    .showcase-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+      cursor: pointer;
+    }
+    .showcase-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--cyan);
+    }
+    .showcase-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid var(--border);
+    }
+    .showcase-info {
+      padding: 16px;
+    }
+    .showcase-title {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .showcase-author {
+      font-size: 0.85rem;
+      color: var(--cyan);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .showcase-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .sub-section-title {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      color: var(--white);
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font-head);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .card-rel {
+      position: relative;
+    }
+    
+    /* MODAL ZOOM */
+    #zoom-modal {
+      display: none;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.9); z-index: 1000;
+      align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    #zoom-modal.show { opacity: 1; }
+    .zoom-content {
+      max-width: 900px; width: 100%;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .zoom-img { width: 100%; max-height: 60vh; object-fit: contain; background: #000; }
+    .zoom-info { padding: 24px; }
+    .zoom-title { font-family: var(--font-head); font-size: 1.5rem; color: var(--white); margin-bottom: 8px; }
+    .zoom-author { color: var(--cyan); font-weight: 600; margin-bottom: 16px; display: inline-block; }
+    .zoom-desc { color: var(--text-muted); line-height: 1.6; }
+    .zoom-close {
+      position: absolute; top: 20px; right: 20px;
+      background: #000; border: 1px solid var(--border);
+      color: #fff; width: 40px; height: 40px; border-radius: 50%;
+      cursor: pointer; font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: 0.2s;
+    }
+    .zoom-close:hover { background: var(--primary); border-color: var(--primary); }
+  </style>
+</head>
+<body data-page="showcase">
+
+  <!-- ══ NAVIGATION ══════════════════════════════════════════ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <span class="mark">HL</span>
+        HIDDEN <span class="accent">LEVEL</span>
+      </a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html" data-page="home">Home</a></li>
+        <li><a href="about.html" data-page="about">About</a></li>
+        <li><a href="leaderboard.html" data-page="leaderboard">Leaderboard</a></li>
+        <li><a href="calendar.html" data-page="calendar">Events</a></li>
+        <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
+        <li><a href="contact.html" data-page="contact">Contact</a></li>
+        <li><a href="showcase.html" data-page="showcase">Showcase</a></li>
+        <li><a href="account.html" data-page="account">Account</a></li>
+        <li>
+          <a href="https://discord.gg/w6xh7fzxr3"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn-discord" style="padding:8px 16px;font-size:0.65rem;">
+            Join Discord
+          </a>
+        </li>
+      </ul>
+      <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+    <main class="container">
+      <div class="showcase-header">
+        <h1>Community <span class="gradient-text">Showcase</span></h1>
+        <p style="margin-top:20px;margin-bottom:30px;"><button class="btn btn-primary" onclick="openSubmitModal()">Upload Your Build</button></p>
+      </div>
+
+      <h2 class="sub-section-title">Featured Spotlights</h2>
+      <div id="featured-grid" class="showcase-grid"></div>
+
+      <h2 class="sub-section-title" style="margin-top: 40px;">The Archives</h2>
+      <div id="archive-grid" class="showcase-grid"></div>
+    </main>
+  </div>
+
+  <!-- ══ FOOTER ═══════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <div class="footer__logo">
+            <span class="mark">HL</span>
+            HIDDEN <span class="accent">LEVEL</span>
+          </div>
+          <p>Urbana-Champaign's gaming destination. PC stations, consoles, community events, and a space to belong.</p>
+          <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer"
+             class="btn btn-discord" style="font-size:0.65rem;padding:10px 20px;">
+            Join Our Discord
+          </a>
+        </div>
+        <div class="footer__col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="calendar.html">Events</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="showcase.html">Showcase</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Contact</h4>
+          <address>
+            <a href="https://maps.google.com/?q=110+E+University+Ave+Urbana+IL" target="_blank" rel="noopener noreferrer">
+              110 E University Ave<br />Suite I, Urbana IL
+            </a><br /><br />
+            <a href="tel:2174187404">217-418-7404</a><br />
+            <a href="mailto:Hiddenlevelcu@gmail.com">Hiddenlevelcu@gmail.com</a>
+          </address>
+        </div>
+        <div class="footer__col">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
+            <li><a href="calendar.html">Better Together Night</a></li>
+            <li><a href="calendar.html">Family Game Night</a></li>
+            <li><a href="contact.html">Private Bookings</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>© 2026 Hidden Level Cyber Cafe · Urbana, IL</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="zoom-modal">
+    <button class="zoom-close" onclick="closeZoom()">&times;</button>
+    <div class="zoom-content" id="zoom-content">
+      <img src="" alt="Showcase Image" class="zoom-img" id="zoom-img" referrerPolicy="no-referrer" />
+      <div class="zoom-info">
+        <div class="zoom-title" id="zoom-title"></div>
+        <div class="zoom-author" id="zoom-author"></div>
+        <div class="zoom-desc" id="zoom-desc"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="submit-modal" class="modal-overlay" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Upload Your Build</h3>
+        <button class="modal-close" onclick="closeSubmitModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <form id="submit-form" onsubmit="submitBuild(event)">
+          <div class="form-group" style="margin-bottom:15px;">
+            <label style="display:block;margin-bottom:5px;">Title</label>
+            <input type="text" id="sub-title" class="input" required />
+          </div>
+          <div class="form-group" style="margin-bottom:15px;">
+            <label style="display:block;margin-bottom:5px;">Your Name/Handle</label>
+            <input type="text" id="sub-author" class="input" required />
+          </div>
+          <div class="form-group" style="margin-bottom:15px;">
+            <label style="display:block;margin-bottom:5px;">Image URL</label>
+            <input type="url" id="sub-url" class="input" placeholder="https://i.imgur.com/example.jpg" required />
+            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:5px;">💡 Right-click an Imgur photo and select "Copy Image Address" for the best results.</div>
+          </div>
+          <div class="form-group" style="margin-bottom:15px;">
+            <label style="display:block;margin-bottom:5px;">Description (Optional)</label>
+            <textarea id="sub-desc" class="input" rows="3"></textarea>
+          </div>
+          <p id="sub-msg" style="margin-bottom:15px;"></p>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Submit for Approval</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    function renderCard(item) {
+      const badge = item.featured ? '<div class="badge">Featured</div>' : '';
+      return `
+        <div class="showcase-card card-rel" onclick="openZoom('${escapeHtml(item.title)}', '${escapeHtml(item.author)}', '${escapeHtml(item.description)}', '${item.url}')">
+          <img src="${item.url}" alt="${escapeHtml(item.title)}" class="showcase-img" referrerPolicy="no-referrer" loading="lazy" />
+          ${badge}
+          <div class="showcase-info">
+            <div class="showcase-title">${escapeHtml(item.title)}</div>
+            <div class="showcase-author">${escapeHtml(item.author)}</div>
+            <div class="showcase-desc">${escapeHtml(item.description)}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function loadShowcase() {
+      try {
+        const res = await fetch('/api/showcase');
+        const items = await res.json();
+        
+        let featuredArr = [];
+        let archiveArr = [];
+        
+        // Pick all featured items, or up to 10 latest items
+        items.forEach((item, idx) => {
+          if (item.featured || (featuredArr.length < 10 && archiveArr.length === 0)) {
+            featuredArr.push(item);
+          } else {
+            archiveArr.push(item);
+          }
+        });
+        
+        if (featuredArr.length === 0) {
+          document.getElementById('featured-grid').innerHTML = '<p class="empty" style="color:var(--text-muted); grid-column:1/-1;">No community posts yet. Join our Discord to submit your builds!</p>';
+        } else {
+          document.getElementById('featured-grid').innerHTML = featuredArr.map(renderCard).join('');
+        }
+        
+        if (archiveArr.length === 0) {
+          document.getElementById('archive-grid').innerHTML = '<p class="empty" style="color:var(--text-muted); grid-column:1/-1;">Check back later as our community grows.</p>';
+        } else {
+          document.getElementById('archive-grid').innerHTML = archiveArr.map(renderCard).join('');
+        }
+
+      } catch (err) {
+        document.getElementById('featured-grid').innerHTML = '<p class="error" style="color:var(--primary);">Failed to load showcase data.</p>';
+        document.getElementById('archive-grid').innerHTML = '';
+      }
+    }
+
+    function openZoom(title, author, desc, url) {
+      document.getElementById('zoom-img').src = url;
+      document.getElementById('zoom-title').textContent = title;
+      document.getElementById('zoom-author').textContent = 'By ' + author;
+      document.getElementById('zoom-desc').textContent = desc;
+      const modal = document.getElementById('zoom-modal');
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('show'), 10);
+    }
+    function closeZoom() {
+      const modal = document.getElementById('zoom-modal');
+      modal.classList.remove('show');
+      setTimeout(() => {
+        modal.style.display = 'none';
+        document.getElementById('zoom-img').src = '';
+      }, 300);
+    }
+
+    document.getElementById('zoom-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'zoom-modal') closeZoom();
+    });
+    
+    document.getElementById('submit-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'submit-modal') closeSubmitModal();
+    });
+
+    function openSubmitModal() {
+      document.getElementById('submit-form').reset();
+      document.getElementById('sub-msg').textContent = '';
+      const modal = document.getElementById('submit-modal');
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('show'), 10);
+    }
+    
+    function closeSubmitModal() {
+      const modal = document.getElementById('submit-modal');
+      modal.classList.remove('show');
+      setTimeout(() => { modal.style.display = 'none'; }, 300);
+    }
+
+    async function submitBuild(e) {
+      e.preventDefault();
+      const msgEl = document.getElementById('sub-msg');
+      const title = document.getElementById('sub-title').value.trim();
+      const author = document.getElementById('sub-author').value.trim();
+      const description = document.getElementById('sub-desc').value.trim();
+      const url = document.getElementById('sub-url').value.trim();
+
+      if (!url) {
+        msgEl.style.color = 'var(--primary)';
+        msgEl.textContent = 'Please enter an image URL.';
+        return;
+      }
+
+      let payload = { title, author, description, url };
+      performSubmission(payload);
+    }
+
+    async function performSubmission(payload) {
+      const msgEl = document.getElementById('sub-msg');
+      try {
+        msgEl.style.color = 'var(--text)';
+        msgEl.textContent = 'Submitting...';
+        const res = await fetch('/api/showcase/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          msgEl.style.color = 'var(--cyan)';
+          msgEl.textContent = 'Submitted successfully! Waiting for admin approval.';
+          document.getElementById('submit-form').reset();
+          setTimeout(closeSubmitModal, 2000);
+        } else {
+          msgEl.style.color = 'var(--primary)';
+          msgEl.textContent = data.error || 'Submission failed.';
+        }
+      } catch (err) {
+        msgEl.style.color = 'var(--primary)';
+        msgEl.textContent = 'An error occurred during submission.';
+      }
+    }
+
+    loadShowcase();
+  </script>
+</body>
+</html>

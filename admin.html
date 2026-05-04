@@ -345,6 +345,7 @@
       <a class="nav-item" href="/" target="_blank"><span class="dot"></span>Home</a>
       <a class="nav-item" href="/pricing.html" target="_blank"><span class="dot"></span>Pricing</a>
       <a class="nav-item" href="/contact.html" target="_blank"><span class="dot"></span>Contact</a>
+      <a class="nav-item" href="/showcase.html" target="_blank"><span class="dot"></span>Showcase</a>
 
       <div class="sidebar-footer">
         Hidden Level Cyber Cafe<br/>
@@ -616,6 +617,50 @@
         <div class="card fade-in">
           <div class="card-header"><div class="card-title">Current Leaderboard</div></div>
           <div id="lb-list" class="event-list"><div class="empty">Loading…</div></div>
+        </div>
+      </div>
+
+      <!-- SHOWCASE ENTRIES -->
+      <div class="topbar" style="margin-top: 48px; margin-bottom: 20px;">
+        <div>
+          <div class="page-title"><span class="accent">Community</span> Showcase</div>
+          <div class="page-sub">Add image posts and feature great builds from the community.</div>
+        </div>
+      </div>
+      
+      <div class="columns">
+        <!-- Add Showcase -->
+        <div class="card fade-in">
+          <div class="card-header"><div class="card-title" id="sc-card-title">Add Showcase Item</div></div>
+          
+          <input type="hidden" id="sc-id" />
+          
+          <label>Title</label>
+          <input type="text" id="sc-title" placeholder="e.g. Castle Base, Crazy Redstone..." />
+          
+          <label>Image URL</label>
+          <input type="text" id="sc-url" placeholder="https://..." />
+          
+          <label>Author</label>
+          <input type="text" id="sc-author" placeholder="Player name..." />
+          
+          <label>Description</label>
+          <textarea id="sc-desc" rows="3" placeholder="Description of the build..." style="width:100%; background:var(--bg); border:1px solid var(--border); color:var(--white); padding:10px; border-radius:6px; font-family:inherit; resize:vertical;"></textarea>
+          
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input type="checkbox" id="sc-featured" style="width:auto; margin:0;" />
+            <span style="font-size:0.8rem; color:var(--muted);">Featured (show on top of page)</span>
+          </label>
+          
+          <button class="btn btn-primary" onclick="submitShowcase()" style="margin-top:16px;">Save Item</button>
+          <button class="btn btn-sm btn-danger" onclick="resetScForm()" style="margin-top:4px;" id="sc-cancel-btn">Cancel/Clear</button>
+          <div id="sc-msg" class="msg" style="display:none; margin-top:12px;"></div>
+        </div>
+
+        <!-- Showcase List -->
+        <div class="card fade-in">
+          <div class="card-header"><div class="card-title">Approved Showcase Items</div></div>
+          <div id="sc-list" class="event-list"><div class="empty">Loading…</div></div>
         </div>
       </div>
 
@@ -1043,18 +1088,119 @@ async function deleteRecurring(id) {
 let allPlayers = [];
 let allGames = [];
 let allEntries = [];
+let allShowcases = [];
 
 async function loadAdminData() {
   await Promise.all([
     fetch('/api/admin/players', { headers: { Authorization: authHeader() } }).then(r => r.json()).then(d => { allPlayers = d; }),
     fetch('/api/admin/games', { headers: { Authorization: authHeader() } }).then(r => r.json()).then(d => { allGames = d; }),
-    fetch('/api/admin/leaderboard', { headers: { Authorization: authHeader() } }).then(r => r.json()).then(d => { allEntries = d; })
+    fetch('/api/admin/leaderboard', { headers: { Authorization: authHeader() } }).then(r => r.json()).then(d => { allEntries = d; }),
+    fetch('/api/admin/showcase', { headers: { Authorization: authHeader() } }).then(r => r.json()).then(d => { allShowcases = d; })
   ]);
   renderPlayers();
   renderGames();
   renderLbSelectors();
   renderEntries();
+  renderShowcase();
 }
+
+function renderShowcase() {
+  const listEl = document.getElementById('sc-list');
+  if (!allShowcases || allShowcases.length === 0) {
+    listEl.innerHTML = '<div class="empty">No showcase items yet.</div>';
+    return;
+  }
+  
+  listEl.innerHTML = allShowcases.map(sc => `
+    <div class="event-row">
+      <img style="width: 80px; height: 80px; object-fit: cover;" src="${esc(sc.url)}" alt="Thumbnail" />
+      <div class="event-body">
+        <div class="event-title-row">
+          <div class="event-title">${esc(sc.title)}</div>
+          ${sc.featured ? '<span class="pill" style="background:var(--primary); color:#fff;">Featured</span>' : ''}
+          ${sc.pending ? '<span class="pill" style="background:var(--secondary); color:#000;">Pending</span>' : ''}
+        </div>
+        <div class="event-time">By ${esc(sc.author)}</div>
+        <div class="event-desc">${esc(sc.description)}</div>
+      </div>
+      <div class="event-actions">
+        ${sc.pending ? `<button class="btn btn-sm btn-primary" onclick="approveShowcase('${esc(sc.id)}')">Approve</button>` : ''}
+        <button class="btn btn-sm btn-danger" onclick="deleteShowcase('${esc(sc.id)}')">Del</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function submitShowcase() {
+  const idEl = document.getElementById('sc-id');
+  const msgEl = document.getElementById('sc-msg');
+  const title = document.getElementById('sc-title').value.trim();
+  const url = document.getElementById('sc-url').value.trim();
+  const author = document.getElementById('sc-author').value.trim();
+  const description = document.getElementById('sc-desc').value.trim();
+  const featured = document.getElementById('sc-featured').checked;
+  
+  if (!title || !url || !author) {
+    showMsg(msgEl, 'error', 'Title, URL, and Author required');
+    return;
+  }
+  
+  const payload = { title, url, author, description, featured };
+  if (idEl.value) payload.id = idEl.value;
+  
+  try {
+    const res = await fetch('/api/admin/showcase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: authHeader() },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Failed to save showcase item');
+    showMsg(msgEl, 'success', 'Showcase saved');
+    resetScForm();
+    loadAdminData();
+  } catch (e) {
+    showMsg(msgEl, 'error', e.message);
+  }
+}
+
+function resetScForm() {
+  document.getElementById('sc-id').value = '';
+  document.getElementById('sc-title').value = '';
+  document.getElementById('sc-url').value = '';
+  document.getElementById('sc-author').value = '';
+  document.getElementById('sc-desc').value = '';
+  document.getElementById('sc-featured').checked = false;
+  document.getElementById('sc-card-title').textContent = 'Add Showcase Item';
+}
+
+async function approveShowcase(id) {
+  const sc = allShowcases.find(s => s.id === id);
+  if (!sc) return;
+  try {
+    await fetch('/api/admin/showcase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: authHeader() },
+      body: JSON.stringify({ ...sc, pending: false })
+    });
+    loadAdminData();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function deleteShowcase(id) {
+  if (!confirm('Delete this showcase item?')) return;
+  try {
+    await fetch('/api/admin/showcase/' + encodeURIComponent(id), {
+      method: 'DELETE',
+      headers: { Authorization: authHeader() }
+    });
+    loadAdminData();
+  } catch (e) {
+    alert('Error deleting showcase item');
+  }
+}
+
 
 function renderPlayers() {
   const plList = document.getElementById('pl-list');

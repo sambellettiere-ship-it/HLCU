@@ -15,9 +15,13 @@ const REGISTRATIONS_FILE = path.join(DATA_DIR, 'registrations.json');
 const RECURRING_FILE = path.join(DATA_DIR, 'recurring.json');
 const PLAYERS_FILE = path.join(DATA_DIR, 'players.json');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
+const SHOWCASE_FILE = path.join(DATA_DIR, 'showcase.json');
 const OWNER_EMAIL = process.env.NOTIFY_EMAIL || 'hiddenlevelcu@gmail.com';
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+const UPLOADS_DIR = path.join(DATA_DIR, 'uploads');
+if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+app.use('/uploads', express.static(UPLOADS_DIR));
 app.use(express.static(__dirname, { dotfiles: 'deny' }));
 
 // ── Data helpers ──────────────────────────────────────────────
@@ -522,6 +526,82 @@ app.get('/api/leaderboard', (req, res) => {
     games: readJSON(GAMES_FILE, []),
     entries: readJSON(LEADERBOARD_FILE, [])
   });
+});
+
+// ── Showcase ──────────────────────────────────────────────────
+app.get('/api/showcase', (req, res) => {
+  const items = readJSON(SHOWCASE_FILE, []);
+  res.json(items.filter(i => !i.pending));
+});
+
+app.get('/api/admin/showcase', (req, res) => {
+  if (!checkAuth(req, res)) return;
+  res.json(readJSON(SHOWCASE_FILE, []));
+});
+
+// User submit showcase
+app.post('/api/showcase/submit', (req, res) => {
+  const { title, author, description, url } = req.body;
+  
+  if (!title || !author || !url) {
+    return res.status(400).json({ error: 'title, author, and url are required' });
+  }
+
+  const items = readJSON(SHOWCASE_FILE, []);
+  const item = {
+    id: crypto.randomUUID(),
+    title, url, author, description: description || '',
+    featured: false,
+    pending: true,
+    createdAt: new Date().toISOString()
+  };
+  items.unshift(item);
+  writeJSON(SHOWCASE_FILE, items);
+  res.json({ success: true });
+});
+
+app.post('/api/admin/showcase', (req, res) => {
+  if (!checkAuth(req, res)) return;
+  const { title, url, author, description, featured } = req.body;
+  if (!title || !url || !author) return res.status(400).json({ error: 'title, url, and author are required' });
+  
+  const items = readJSON(SHOWCASE_FILE, []);
+  let item;
+  if (req.body.id) {
+    const idx = items.findIndex(i => i.id === req.body.id);
+    if (idx !== -1) {
+      items[idx] = { ...items[idx], title, url, author, description, featured: !!featured };
+      if (req.body.pending !== undefined) {
+        items[idx].pending = !!req.body.pending;
+      }
+      item = items[idx];
+    }
+  }
+  
+  if (!item) {
+    item = {
+      id: crypto.randomUUID(),
+      title, url, author, description: description || '', featured: !!featured,
+      createdAt: new Date().toISOString()
+    };
+    items.unshift(item);
+  }
+  
+  writeJSON(SHOWCASE_FILE, items);
+  res.json(item);
+});
+
+app.delete('/api/admin/showcase/:id', (req, res) => {
+  if (!checkAuth(req, res)) return;
+  const items = readJSON(SHOWCASE_FILE, []);
+  const idx = items.findIndex(i => i.id === req.params.id);
+  if (idx !== -1) {
+    const [removed] = items.splice(idx, 1);
+    writeJSON(SHOWCASE_FILE, items);
+    res.json(removed);
+  } else {
+    res.status(404).json({ error: 'Item not found' });
+  }
 });
 
 // ── Contact / booking form ────────────────────────────────────

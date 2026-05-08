@@ -1125,6 +1125,7 @@ function renderShowcase() {
       </div>
       <div class="event-actions">
         ${sc.pending ? `<button class="btn btn-sm btn-primary" onclick="approveShowcase('${esc(sc.id)}')">Approve</button>` : ''}
+        <button class="btn btn-sm btn-outline" onclick="editShowcase('${esc(sc.id)}')">Edit</button>
         <button class="btn btn-sm btn-danger" onclick="deleteShowcase('${esc(sc.id)}')">Del</button>
       </div>
     </div>
@@ -1171,6 +1172,19 @@ function resetScForm() {
   document.getElementById('sc-desc').value = '';
   document.getElementById('sc-featured').checked = false;
   document.getElementById('sc-card-title').textContent = 'Add Showcase Item';
+}
+
+function editShowcase(id) {
+  const sc = allShowcases.find(s => s.id === id);
+  if (!sc) return;
+  document.getElementById('sc-id').value = sc.id;
+  document.getElementById('sc-title').value = sc.title || '';
+  document.getElementById('sc-url').value = sc.url || '';
+  document.getElementById('sc-author').value = sc.author || '';
+  document.getElementById('sc-desc').value = sc.description || '';
+  document.getElementById('sc-featured').checked = !!sc.featured;
+  document.getElementById('sc-card-title').textContent = 'Edit Showcase Item';
+  window.scrollTo(0, 0); 
 }
 
 async function approveShowcase(id) {

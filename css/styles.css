@@ -356,6 +356,8 @@ section {
   background: rgba(0,229,255,0.07);
 }
 .nav__links a.active { color: var(--cyan); }
+.nav__links a.btn-discord { background: var(--discord); color: var(--white); padding: 8px 16px; border: none; }
+.nav__links a.btn-discord:hover { background: var(--discord); color: var(--white); box-shadow: 0 0 32px rgba(88,101,242,0.7); transform: translateY(-3px); }
 
 .nav__hamburger {
   display: none;

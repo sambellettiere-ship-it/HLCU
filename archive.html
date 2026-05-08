@@ -125,7 +125,7 @@
     .zoom-info { padding: 24px; }
     .zoom-title { font-family: var(--font-head); font-size: 1.5rem; color: var(--white); margin-bottom: 8px; }
     .zoom-author { color: var(--cyan); font-weight: 600; margin-bottom: 16px; display: inline-block; }
-    .zoom-desc { color: var(--text-muted); line-height: 1.6; }
+    .zoom-desc { color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; }
     .zoom-close {
       position: absolute; top: 20px; right: 20px;
       background: #000; border: 1px solid var(--border);
@@ -251,8 +251,9 @@
   <script>
     function renderCard(item) {
       const badge = item.featured ? '<div class="badge">Featured</div>' : '';
+      const encodedItem = encodeURIComponent(JSON.stringify(item));
       return `
-        <div class="showcase-card card-rel" onclick="openZoom('${escapeHtml(item.title)}', '${escapeHtml(item.author)}', '${escapeHtml(item.description)}', '${item.url}')">
+        <div class="showcase-card card-rel" onclick="openZoom(this.dataset.item)" data-item="${encodedItem}">
           <img src="${item.url}" alt="${escapeHtml(item.title)}" class="showcase-img" referrerPolicy="no-referrer" loading="lazy" />
           ${badge}
           <div class="showcase-info">
@@ -288,11 +289,12 @@
       }
     }
 
-    function openZoom(title, author, desc, url) {
-      document.getElementById('zoom-img').src = url;
-      document.getElementById('zoom-title').textContent = title;
-      document.getElementById('zoom-author').textContent = 'By ' + author;
-      document.getElementById('zoom-desc').textContent = desc;
+    function openZoom(encodedItem) {
+      const item = JSON.parse(decodeURIComponent(encodedItem));
+      document.getElementById('zoom-img').src = item.url;
+      document.getElementById('zoom-title').textContent = item.title;
+      document.getElementById('zoom-author').textContent = 'By ' + item.author;
+      document.getElementById('zoom-desc').textContent = item.description;
       const modal = document.getElementById('zoom-modal');
       modal.style.display = 'flex';
       setTimeout(() => modal.classList.add('show'), 10);

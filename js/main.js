@@ -442,3 +442,27 @@ function toggleBookingFields() {
   const fields = document.getElementById('booking-fields');
   if (fields) fields.style.display = subject === 'booking' ? 'block' : 'none';
 }
+
+/* ── Dynamic Hours Badge ── */
+(function initHoursBadge() {
+  const textEl = document.getElementById('hero-hours-text');
+  const dotEl = document.getElementById('hero-hours-dot');
+  if (!textEl || !dotEl) return;
+
+  const dayOfWeek = new Date().getDay(); // 0 is Sunday, 1 is Monday
+  
+  if (dayOfWeek === 0 || dayOfWeek === 1) { // Sunday or Monday
+    textEl.textContent = 'Closed Today · Urbana, IL';
+    dotEl.style.background = 'var(--text-muted)'; 
+    dotEl.style.boxShadow = 'none';
+    dotEl.style.animation = 'none';
+  } else {
+    // Tue-Sat
+    textEl.textContent = 'Open Today: 4–10 PM · Urbana, IL';
+    // Keeping default pulse animation and cyan color since the prompt asks for business hours updates.
+    // Resetting just in case.
+    dotEl.style.background = ''; 
+    dotEl.style.boxShadow = '';
+    dotEl.style.animation = '';
+  }
+})();

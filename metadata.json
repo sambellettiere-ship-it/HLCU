@@ -1,6 +1,8 @@
 {
   "name": "HLCC",
-  "description": "",
+  "description": "Hidden Level Cyber Cafe: Urbana-Champaign's premier gaming center and LAN lab with PC gaming rigs, consoles, tournaments, and community events.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

@@ -430,6 +430,56 @@ section {
   z-index: 1;
 }
 
+/* ── Establishment photo backdrop ── */
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 1.6s ease-in-out;
+  will-change: opacity;
+}
+.hero__slide.is-active {
+  opacity: 1;
+}
+/* Darkening + neon-tinted overlay so headline text stays readable
+   over the photos. Hidden until JS confirms photos are present. */
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  background:
+    linear-gradient(100deg,
+      rgba(7,0,15,0.94) 0%,
+      rgba(7,0,15,0.82) 42%,
+      rgba(7,0,15,0.55) 100%),
+    linear-gradient(180deg,
+      rgba(7,0,15,0.55) 0%,
+      rgba(7,0,15,0.25) 38%,
+      rgba(7,0,15,0.9) 100%);
+}
+.hero.has-media .hero__overlay { opacity: 1; }
+/* When photos are present, dim the decorative glows so they don't
+   wash out the imagery. */
+.hero.has-media .hero__bg-glow-1,
+.hero.has-media .hero__bg-glow-2 { opacity: 0.5; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__slide { transition: none; transform: none; }
+}
+
 .hero__badge {
   display: inline-flex;
   align-items: center;

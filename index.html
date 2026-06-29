@@ -106,6 +106,9 @@
 
   <!-- HERO -->
   <section class="hero">
+    <!-- Establishment photo backdrop (populated from window.HERO_BG_IMAGES) -->
+    <div class="hero__media" id="hero-media" aria-hidden="true"></div>
+    <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__bg-glow-1"></div>
     <div class="hero__bg-glow-2"></div>
     <div class="hero__inner">
@@ -423,6 +426,21 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=4"></script>
+<!-- ══ ESTABLISHMENT PHOTOS ════════════════════════════════
+     These photos rotate in the background of the home hero so
+     visitors can see the space. Paste your image URLs below — one
+     per line, inside quotes. Imgur "Copy Image Address" links work
+     well. Landscape (wide) photos look best. Leave the list empty
+     to fall back to the default neon background.
+══════════════════════════════════════════════════════════ -->
+<script>
+  window.HERO_BG_IMAGES = [
+    'https://lh3.googleusercontent.com/gps-cs-s/APNQkAFT9L3tFAQZY6nNR700IJSCBjkAE9GYMtPIcO9Nx04k-66WuZcWJYBqQ2QPO95RRiiMyQRSvRQ5jAv4GGt4fn9NPAJrT2Du_zUe21ykc-AnsiqIpnS4rO4LZexCEkJAJ46UuInlnZGP-Q6U=s1360-w1360-h1020-rw',
+    'https://lh3.googleusercontent.com/gps-cs-s/APNQkAF40e1eT3UHdaKwwBpgATgUhVg0FD9yxEN43NwVjOla9D5mexeZTHs78wWIRcrBR5eEom4yYg74UAXgLb28TW70Zr3UYPkz3zuwIAvztdSZlb2KXqR8Y_-B4OCEoOUiN5i5-g2j0QPHOzN2=s1360-w1360-h1020-rw',
+    'https://lh3.googleusercontent.com/gps-cs-s/APNQkAFUkDezHHbRI-YHb7o05y3nrXgqu01Dh_DLpxmSqCG4Cwb4HOKpDfAdAK2G9Mc6arhzfq6YsDHQnita0gr8q0KM3aNVkR48849UO9yUi9QLS9bq4o_YZWE6TxHIlwnk0xz_CFj0uNaoS8uf=s1360-w1360-h1020-rw',
+    'https://lh3.googleusercontent.com/gps-cs-s/APNQkAFctkSBZo_YqAi3g9WV_bgMaX_ojCPILpzXVaSKYS40eszpQC1QqTwvGGka4D59a9CpHRmDZXl-VckOyJRfB6kla3VUKtNmvERxetT6d6pWwTfkch2PW5dnOReZpU1clUY6nOuoALLwap8=s1360-w1360-h1020-rw',
+  ];
+</script>
+<script src="js/main.js?v=5"></script>
 </body>
 </html>

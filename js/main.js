@@ -443,6 +443,46 @@ function toggleBookingFields() {
   if (fields) fields.style.display = subject === 'booking' ? 'block' : 'none';
 }
 
+/* ── Hero establishment photo backdrop ── */
+(function initHeroBackdrop() {
+  const media = document.getElementById('hero-media');
+  const hero = media ? media.closest('.hero') : null;
+  if (!media || !hero) return;
+
+  const urls = (Array.isArray(window.HERO_BG_IMAGES) ? window.HERO_BG_IMAGES : [])
+    .map(u => String(u).trim())
+    .filter(Boolean);
+  if (!urls.length) return; // keep the default neon background
+
+  // Build a slide layer per photo.
+  const slides = urls.map((url, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'hero__slide' + (i === 0 ? ' is-active' : '');
+    slide.style.backgroundImage = `url("${url.replace(/"/g, '%22')}")`;
+    media.appendChild(slide);
+    return slide;
+  });
+
+  // Only reveal the darkening overlay once the first image actually loads,
+  // so a broken URL never leaves the headline floating on a black box.
+  const first = new Image();
+  first.onload = () => hero.classList.add('has-media');
+  first.onerror = () => { slides[0].remove(); };
+  first.src = urls[0];
+
+  if (slides.length < 2) return; // nothing to rotate
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return; // show a single still image
+
+  let idx = 0;
+  setInterval(() => {
+    slides[idx].classList.remove('is-active');
+    idx = (idx + 1) % slides.length;
+    slides[idx].classList.add('is-active');
+  }, 6000);
+})();
+
 /* ── Dynamic Hours Badge ── */
 (function initHoursBadge() {
   const textEl = document.getElementById('hero-hours-text');

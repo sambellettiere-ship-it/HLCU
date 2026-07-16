@@ -18,6 +18,27 @@ const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const SHOWCASE_FILE = path.join(DATA_DIR, 'showcase.json');
 const OWNER_EMAIL = process.env.NOTIFY_EMAIL || 'hiddenlevelcu@gmail.com';
 
+// ── Canonical host redirect (SEO: consolidate duplicate domains) ──
+// Redirects requests on non-canonical hosts (e.g. the *.run.app URL or the
+// www subdomain) to the primary domain with a 301 so search engines credit a
+// single canonical URL. Opt-in via env so it never breaks the live site
+// before DNS/custom-domain mapping is in place.
+//   CANONICAL_HOST=hiddenlevelcu.com  (enables the redirect)
+const CANONICAL_HOST = (process.env.CANONICAL_HOST || '').trim().toLowerCase();
+if (CANONICAL_HOST) {
+  app.use((req, res, next) => {
+    const host = (req.headers.host || '').toLowerCase();
+    // Never redirect health checks or local/dev hosts.
+    if (!host || host.startsWith('localhost') || host.startsWith('127.0.0.1')) {
+      return next();
+    }
+    if (host !== CANONICAL_HOST) {
+      return res.redirect(301, `https://${CANONICAL_HOST}${req.originalUrl}`);
+    }
+    next();
+  });
+}
+
 app.use(express.json({ limit: '10mb' }));
 const UPLOADS_DIR = path.join(DATA_DIR, 'uploads');
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });

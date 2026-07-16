@@ -1,0 +1,13 @@
+# Hidden Level Cyber Cafe — https://hiddenlevelcu.com
+User-agent: *
+Allow: /
+
+# Private / non-content areas
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /account.html
+Disallow: /api/
+Disallow: /tmp/
+Disallow: /uploads/
+
+Sitemap: https://hiddenlevelcu.com/sitemap.xml

@@ -167,6 +167,8 @@
             <h3>Send a Message</h3>
 
             <form id="contact-form" novalidate>
+              <!-- Honeypot spam trap: hidden from users, tempting to bots -->
+              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;" />
               <div class="grid-2" style="gap:16px;">
                 <div class="form-group">
                   <label for="f-name">Name</label>
@@ -369,6 +371,6 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=4"></script>
+<script src="js/main.js?v=7"></script>
 </body>
 </html>

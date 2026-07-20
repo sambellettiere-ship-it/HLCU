@@ -382,36 +382,71 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEventModal(); });
 
-/* ── Contact form ── */
+/* ── Contact form (Formspree AJAX) ── */
 (function initContactForm() {
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xkodbeyj';
   const form = document.getElementById('contact-form');
   if (!form) return;
+
+  const subjectLabels = {
+    general: 'General Question',
+    booking: 'Private Booking',
+    membership: 'Membership',
+    event: 'Event Info',
+    other: 'Other',
+  };
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const errEl = document.getElementById('form-error');
+    const submitBtn = form.querySelector('[type=submit]');
     if (errEl) errEl.style.display = 'none';
 
-    const body = {
-      name: document.getElementById('f-name')?.value.trim() || '',
-      email: document.getElementById('f-email')?.value.trim() || '',
-      subject: document.getElementById('f-subject')?.value || '',
-      message: document.getElementById('f-msg')?.value.trim() || '',
+    const showError = msg => {
+      if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; }
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Message'; }
     };
-    if (document.getElementById('f-booking-date')) {
-      body.bookingDate = document.getElementById('f-booking-date').value;
-      body.bookingTime = document.getElementById('f-booking-time').value.trim();
-      body.bookingGuests = document.getElementById('f-booking-guests').value;
-      body.bookingType = document.getElementById('f-booking-type').value;
+
+    // Honeypot: bots fill hidden fields; a real user leaves it empty.
+    const gotcha = form.querySelector('[name="_gotcha"]');
+    if (gotcha && gotcha.value) return; // silently drop spam
+
+    const subjectVal = document.getElementById('f-subject')?.value || '';
+    const subjectLabel = subjectLabels[subjectVal] || 'Contact Form';
+    const name = document.getElementById('f-name')?.value.trim() || '';
+
+    const body = {
+      name,
+      email: document.getElementById('f-email')?.value.trim() || '',
+      subject: subjectLabel,
+      message: document.getElementById('f-msg')?.value.trim() || '',
+      // Formspree special field: sets the notification email's subject line.
+      _subject: `[Hidden Level] ${subjectLabel}${name ? ' from ' + name : ''}`,
+    };
+
+    // Only send booking details for private-booking enquiries.
+    if (subjectVal === 'booking') {
+      body.bookingDate = document.getElementById('f-booking-date')?.value || '';
+      body.bookingTime = document.getElementById('f-booking-time')?.value.trim() || '';
+      body.bookingGuests = document.getElementById('f-booking-guests')?.value || '';
+      body.bookingType = document.getElementById('f-booking-type')?.value || '';
     }
 
-    const submitBtn = form.querySelector('[type=submit]');
+    if (!body.name || !body.email || !body.message) {
+      showError('Please fill in your name, email, and message.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) {
+      showError('Please enter a valid email address.');
+      return;
+    }
+
     if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(body),
       });
       if (res.ok) {
@@ -420,18 +455,13 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEventMo
         if (success) success.style.display = 'block';
       } else {
         const data = await res.json().catch(() => ({}));
-        if (errEl) {
-          errEl.textContent = data.error || 'Something went wrong. Please try again or call us directly.';
-          errEl.style.display = 'block';
-        }
-        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Message'; }
+        const msg = Array.isArray(data.errors) && data.errors.length
+          ? data.errors.map(er => er.message).join(', ')
+          : 'Something went wrong. Please try again or call us directly.';
+        showError(msg);
       }
     } catch {
-      if (errEl) {
-        errEl.textContent = 'Could not connect. Please call us at 217-418-7404 or email Hiddenlevelcu@gmail.com.';
-        errEl.style.display = 'block';
-      }
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send Message'; }
+      showError('Could not connect. Please call us at 217-418-7404 or email Hiddenlevelcu@gmail.com.');
     }
   });
 })();

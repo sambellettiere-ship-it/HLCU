@@ -267,6 +267,7 @@
       font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
     }
     .pill-community { background: rgba(0,255,153,0.13); color: var(--green); border: 1px solid rgba(0,255,153,0.3); }
+    .pill-tournament { background: rgba(255,80,110,0.13); color: var(--red); border: 1px solid rgba(255,80,110,0.3); }
     .pill-family    { background: rgba(191,0,255,0.13); color: #d966ff; border: 1px solid rgba(191,0,255,0.3); }
     .pill-private   { background: rgba(255,214,0,0.13); color: var(--yellow); border: 1px solid rgba(255,214,0,0.3); }
     .pill-special   { background: rgba(0,229,255,0.13); color: var(--cyan); border: 1px solid rgba(0,229,255,0.3); }
@@ -421,6 +422,7 @@
               <select id="ev-type">
                 <option value="special">Special Event</option>
                 <option value="community">Community</option>
+                <option value="tournament">Tournament</option>
                 <option value="family">Family</option>
                 <option value="private">Private</option>
               </select>
@@ -459,6 +461,7 @@
             <button class="filter-pill" data-filter="upcoming" onclick="setFilter(this)">Upcoming</button>
             <button class="filter-pill" data-filter="past" onclick="setFilter(this)">Past</button>
             <button class="filter-pill" data-filter="community" onclick="setFilter(this)">Community</button>
+            <button class="filter-pill" data-filter="tournament" onclick="setFilter(this)">Tournament</button>
             <button class="filter-pill" data-filter="family" onclick="setFilter(this)">Family</button>
             <button class="filter-pill" data-filter="private" onclick="setFilter(this)">Private</button>
             <button class="filter-pill" data-filter="special" onclick="setFilter(this)">Special</button>
@@ -491,6 +494,7 @@
               <select id="rec-type">
                 <option value="special">Special Event</option>
                 <option value="community">Community</option>
+                <option value="tournament">Tournament</option>
                 <option value="family">Family</option>
                 <option value="private">Private</option>
               </select>
@@ -788,7 +792,7 @@ function renderList() {
   let filtered = allEvents.slice();
   if (currentFilter === 'upcoming') filtered = filtered.filter(e => e.date >= today);
   else if (currentFilter === 'past') filtered = filtered.filter(e => e.date < today);
-  else if (['community','family','private','special'].includes(currentFilter)) {
+  else if (['community','tournament','family','private','special'].includes(currentFilter)) {
     filtered = filtered.filter(e => e.type === currentFilter);
   }
   if (search) {

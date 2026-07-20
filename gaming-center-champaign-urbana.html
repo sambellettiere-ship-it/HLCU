@@ -110,7 +110,7 @@
             "name": "Do I need a membership to play at Hidden Level?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No! We welcome drop-ins and walk-ins. You can purchase a Day Pass / Event Entry for just $15 which gives you access to open PC play or participation in our scheduled community events. We also offer monthly memberships starting at $50 for our frequent cyber cafe goers."
+              "text": "No! We welcome drop-ins and walk-ins. You can purchase a Day Pass / Event Entry for just $15 which gives you access to open PC play or participation in our scheduled community events. We also offer monthly memberships starting at $70 for our frequent cyber cafe goers."
             }
           },
           {
@@ -138,7 +138,13 @@
     </a>
     <ul class="nav__links" id="nav-links">
       <li><a href="index.html" data-page="home">Home</a></li>
-      <li><a href="about.html" data-page="about">About</a></li>
+      <li class="nav__dropdown">
+        <a href="about.html" data-page="about" class="nav__dropdown-toggle" aria-haspopup="true">About<span class="caret">▾</span></a>
+        <ul class="nav__submenu">
+          <li><a href="about.html#about-me">About Me</a></li>
+          <li><a href="about.html#about-business">About the Business</a></li>
+        </ul>
+      </li>
       <li><a href="leaderboard.html" data-page="leaderboard">Leaderboard</a></li>
       <li><a href="calendar.html" data-page="calendar">Events</a></li>
       <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
@@ -215,7 +221,7 @@
           <div style="font-size: 2rem; margin-bottom: 12px;">🏆</div>
           <h3 style="font-family: var(--font-head); font-size: 1.25rem; color: var(--white); margin-bottom: 10px;">Weekly Tournaments</h3>
           <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
-            We keep the community moving. Join our signature weekly events including Friday "Better Together Night" to compete, win prizes, and enjoy LAN energy.
+            We keep the community moving. Join our regular community nights and tournament events to compete, win prizes, and enjoy that LAN energy.
           </p>
         </div>
       </div>
@@ -280,7 +286,7 @@
             💵 How much does it cost to play at the cyber cafe?
           </h3>
           <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.98rem;">
-            A simple walk-in Day Pass or Event Entry fee is only <strong>$15 per person</strong>! It grants access to top-of-the-line setups, PCs, and our signature events. If you're a regular, check out our monthly membership packages starting at <strong>$50/month</strong> which offer incredible play rates and cafe perks. Let's look at the <a href="pricing.html" style="color: var(--cyan); text-decoration: underline;">Pricing page</a> for details.
+            A simple walk-in Day Pass or Event Entry fee is only <strong>$15 per person</strong>! It grants access to top-of-the-line setups, PCs, and our signature events. If you're a regular, check out our monthly membership packages starting at <strong>$70/month</strong> which offer incredible play rates and cafe perks. Let's look at the <a href="pricing.html" style="color: var(--cyan); text-decoration: underline;">Pricing page</a> for details.
           </p>
         </div>
 
@@ -311,7 +317,7 @@
     <div class="container">
       <div class="cta-box reveal">
         <h2>Ready to <span class="gradient-text">Level Up?</span></h2>
-        <p>Event entry $15 · Monthly membership $50/month · Private events from $150/hour.</p>
+        <p>Event entry $15 · Monthly membership $70/month · Private events by request.</p>
         <div class="btn-group">
           <a href="pricing.html" class="btn btn-primary">See Pricing</a>
           <a href="contact.html" class="btn btn-outline">Contact Us</a>
@@ -381,8 +387,8 @@
         <h4>Community</h4>
         <ul>
           <li><a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
-          <li><a href="calendar.html">Better Together Night</a></li>
-          <li><a href="calendar.html">Family Game Night</a></li>
+          <li><a href="calendar.html">Community Events</a></li>
+          <li><a href="calendar.html">Tournaments</a></li>
           <li><a href="contact.html">Private Bookings</a></li>
         </ul>
       </div>

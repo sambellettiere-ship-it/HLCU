@@ -173,7 +173,13 @@
       </a>
       <ul class="nav__links" id="nav-links">
         <li><a href="index.html" data-page="home">Home</a></li>
-        <li><a href="about.html" data-page="about">About</a></li>
+        <li class="nav__dropdown">
+        <a href="about.html" data-page="about" class="nav__dropdown-toggle" aria-haspopup="true">About<span class="caret">▾</span></a>
+        <ul class="nav__submenu">
+          <li><a href="about.html#about-me">About Me</a></li>
+          <li><a href="about.html#about-business">About the Business</a></li>
+        </ul>
+      </li>
         <li><a href="leaderboard.html" data-page="leaderboard">Leaderboard</a></li>
         <li><a href="calendar.html" data-page="calendar">Events</a></li>
         <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
@@ -257,8 +263,8 @@
           <h4>Community</h4>
           <ul>
             <li><a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
-            <li><a href="calendar.html">Better Together Night</a></li>
-            <li><a href="calendar.html">Family Game Night</a></li>
+            <li><a href="calendar.html">Community Events</a></li>
+            <li><a href="calendar.html">Tournaments</a></li>
             <li><a href="contact.html">Private Bookings</a></li>
           </ul>
         </div>

@@ -13,7 +13,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pricing & Memberships | Hidden Level Cyber Cafe</title>
-  <meta name="description" content="Affordable entry fees and gaming membership rates. Get a walk-in Day Pass / Event Entry for just $15, monthly memberships for $50, or book private events." />
+  <meta name="description" content="Affordable entry fees and gaming membership rates. Get a walk-in Day Pass / Event Entry for just $15, monthly memberships for $70, or book private events." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" />
@@ -30,7 +30,7 @@
   </script>
   <!-- Open Graph / SEO Metadata -->
   <meta property="og:title" content="Pricing & Memberships | Hidden Level Cyber Cafe" />
-  <meta property="og:description" content="Affordable entry fees and gaming membership rates. Get a walk-in Day Pass / Event Entry for just $15, monthly memberships for $50, or book private events." />
+  <meta property="og:description" content="Affordable entry fees and gaming membership rates. Get a walk-in Day Pass / Event Entry for just $15, monthly memberships for $70, or book private events." />
   <meta property="og:image" content="https://hiddenlevelcu.com/logo.svg" />
   <meta property="og:url" content="https://hiddenlevelcu.com/pricing.html" />
   <meta property="og:type" content="website" />
@@ -46,7 +46,13 @@
     </a>
     <ul class="nav__links" id="nav-links">
       <li><a href="index.html" data-page="home">Home</a></li>
-      <li><a href="about.html" data-page="about">About</a></li>
+      <li class="nav__dropdown">
+        <a href="about.html" data-page="about" class="nav__dropdown-toggle" aria-haspopup="true">About<span class="caret">▾</span></a>
+        <ul class="nav__submenu">
+          <li><a href="about.html#about-me">About Me</a></li>
+          <li><a href="about.html#about-business">About the Business</a></li>
+        </ul>
+      </li>
       <li><a href="leaderboard.html" data-page="leaderboard">Leaderboard</a></li>
       <li><a href="calendar.html" data-page="calendar">Events</a></li>
       <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
@@ -124,7 +130,7 @@
             <div class="pricing-tier">Monthly Membership</div>
             <div class="pricing-amount">
               <span class="currency">$</span>
-              <span class="price">50</span>
+              <span class="price">70</span>
               <span class="period">/ month</span>
             </div>
             <p class="pricing-desc">
@@ -151,11 +157,11 @@
             <div>
               <div style="font-family:var(--font-head);font-size:0.6rem;letter-spacing:0.15em;color:#d966ff;text-transform:uppercase;margin-bottom:8px;">Private Booking</div>
               <h3 style="font-size:1.1rem;color:var(--white);margin-bottom:6px;">Private Event Booking</h3>
-              <p style="color:var(--text-muted);font-size:0.92rem;max-width:480px;">Reserve the entire Hidden Level space for your group celebration. Birthdays, team outings, graduation parties, or any private gathering — fully exclusive, up to 20 guests. You bring the crew, we handle the setup.</p>
+              <p style="color:var(--text-muted);font-size:0.92rem;max-width:480px;">Reserve the entire Hidden Level space for your group celebration. Birthdays, team outings, graduation parties, or any private gathering — fully exclusive, up to 20 guests. Pricing varies depending on the type of event, so reach out and we'll put together a custom quote.</p>
             </div>
             <div style="text-align:center;flex-shrink:0;">
-              <div style="font-family:var(--font-head);font-size:2.8rem;font-weight:900;color:#d966ff;text-shadow:0 0 20px rgba(191,0,255,0.6);line-height:1;">$150</div>
-              <div style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.1em;color:var(--text-faint);text-transform:uppercase;margin-top:4px;">per hour</div>
+              <div style="font-family:var(--font-head);font-size:1.6rem;font-weight:900;color:#d966ff;text-shadow:0 0 20px rgba(191,0,255,0.6);line-height:1.15;">Contact<br>Us</div>
+              <div style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.1em;color:var(--text-faint);text-transform:uppercase;margin-top:6px;">for a quote</div>
             </div>
           </div>
           <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
@@ -232,7 +238,7 @@
         <details class="faq-item reveal">
           <summary>What does the Monthly Membership include?</summary>
           <p>
-            The Monthly Membership ($50/mo) is your all-access pass to Hidden Level. It covers every scheduled public event that month — tournaments, date nights, LAN parties, themed game nights, and more — plus open access to the cafe during non-event hours. Excludes private event bookings.
+            The Monthly Membership ($70/mo) is your all-access pass to Hidden Level. It covers every scheduled public event that month — tournaments, date nights, LAN parties, themed game nights, and more — plus open access to the cafe during non-event hours. Excludes private event bookings.
           </p>
         </details>
 
@@ -249,11 +255,11 @@
         <details class="faq-item reveal">
           <summary>How does private event booking work?</summary>
           <p>
-            Private bookings are $150/hour and give your group exclusive use of the entire
-            Hidden Level space — all PC stations, consoles, and the TV lounge — for up to
-            20 guests. We handle the setup and have staff on-site. Great for birthdays,
-            team outings, graduation parties, and more. Contact us to check availability:
-            use the <a href="contact.html" style="color:var(--cyan)">contact form</a>
+            Private bookings give your group exclusive use of the entire Hidden Level space
+            — all PC stations, consoles, and the TV lounge — for up to 20 guests. We handle
+            the setup and have staff on-site. Great for birthdays, team outings, graduation
+            parties, and more. Pricing varies depending on the type of event, so contact us
+            for a custom quote: use the <a href="contact.html" style="color:var(--cyan)">contact form</a>
             or call <a href="tel:2174187404" style="color:var(--cyan)">217-418-7404</a>.
           </p>
         </details>
@@ -347,8 +353,8 @@
         <h4>Community</h4>
         <ul>
           <li><a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
-          <li><a href="calendar.html">Better Together Night</a></li>
-          <li><a href="calendar.html">Family Game Night</a></li>
+          <li><a href="calendar.html">Community Events</a></li>
+          <li><a href="calendar.html">Tournaments</a></li>
           <li><a href="contact.html">Private Bookings</a></li>
         </ul>
       </div>

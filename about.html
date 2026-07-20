@@ -46,7 +46,13 @@
     </a>
     <ul class="nav__links" id="nav-links">
       <li><a href="index.html" data-page="home">Home</a></li>
-      <li><a href="about.html" data-page="about">About</a></li>
+      <li class="nav__dropdown">
+        <a href="about.html" data-page="about" class="nav__dropdown-toggle" aria-haspopup="true">About<span class="caret">▾</span></a>
+        <ul class="nav__submenu">
+          <li><a href="about.html#about-me">About Me</a></li>
+          <li><a href="about.html#about-business">About the Business</a></li>
+        </ul>
+      </li>
       <li><a href="leaderboard.html" data-page="leaderboard">Leaderboard</a></li>
       <li><a href="calendar.html" data-page="calendar">Events</a></li>
       <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
@@ -78,12 +84,59 @@
 
   <div class="divider"></div>
 
-  <!-- ABOUT INTRO -->
-  <section>
+  <!-- ABOUT ME -->
+  <section id="about-me">
     <div class="container">
       <div class="about-intro">
         <div class="about-text">
-          <div class="section-tag">Who We Are</div>
+          <div class="section-tag">About Me</div>
+          <h2>Meet the Founder,<br /><span class="gradient-text">Muhammad</span></h2>
+          <p>
+            I'm Muhammad, the guy behind Hidden Level. I opened this place because Urbana
+            didn't have a spot where gaming felt like a community thing instead of a solo
+            thing — somewhere you could drop in, play, and know the people next to you.
+          </p>
+          <p>
+            Before this, my background was in coaching and movement: 7 years teaching
+            Taekwondo, a few years in boxing, and a degree in exercise science. My current
+            job is as a PE teacher, which helps me support this business. I spent years
+            helping people build skill and discipline in a physical space — now I'm doing
+            the same thing here, just with controllers instead of pads.
+          </p>
+          <p>
+            I always loved the fitness environments and the cultures that come with them —
+            that sense of support, encouragement, and brotherhood — and I always wished for
+            something like it, but for gamers. Whether it's running our weekly community
+            events, organizing tournament nights, or just making sure the PCs run right, I
+            care about building something people actually want to come back to.
+          </p>
+        </div>
+
+        <div class="about-visual-card reveal">
+          <span class="about-emoji">🕹️</span>
+          <div class="about-location">Muhammad</div>
+          <div class="about-location-sub">Founder · Hidden Level</div>
+          <div class="divider" style="margin:24px 0;"></div>
+          <ul class="feature-list" style="text-align:left;">
+            <li>Degree in Exercise Science</li>
+            <li>7 Years Teaching Taekwondo</li>
+            <li>Boxing Background</li>
+            <li>PE Teacher by Day</li>
+            <li>Community Builder at Heart</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT THE BUSINESS -->
+  <section id="about-business">
+    <div class="container">
+      <div class="about-intro">
+        <div class="about-text">
+          <div class="section-tag">About the Business</div>
           <h2>More Than a Café.<br /><span class="gradient-text">A Community Hub.</span></h2>
           <p>
             Hidden Level Cyber Cafe is Urbana-Champaign's gaming destination, located on
@@ -96,14 +149,13 @@
             infrastructure for a seamless gaming experience.
           </p>
           <p>
-            Beyond the games, Hidden Level is a community hub. We host weekly community
-            events like our <strong style="color:var(--cyan)">Better Together Night</strong>,
-            bringing locals together for shared gaming experiences, friendly competition,
-            and good vibes.
+            Beyond the games, Hidden Level is a community hub. We host regular community
+            events that bring locals together for shared gaming experiences, friendly
+            competition, and good vibes.
           </p>
           <p>
-            We also offer private bookings, family game nights, and monthly memberships
-            for regulars who want to make us their home base.
+            We also offer private bookings and monthly memberships for regulars who want to
+            make us their home base.
           </p>
           <p style="color:var(--cyan);font-family:var(--font-head);font-size:0.85rem;letter-spacing:0.08em;margin-top:8px;">
             Come level up!
@@ -183,8 +235,8 @@
           <div class="card-icon">🏆</div>
           <h3>Community Events</h3>
           <p>
-            Weekly Better Together Nights, family game nights, private bookings,
-            and more. There's always something happening at Hidden Level.
+            Weekly community nights, tournament nights, private bookings, and more.
+            There's always something happening at Hidden Level.
           </p>
         </div>
 
@@ -192,8 +244,8 @@
           <div class="card-icon">🔑</div>
           <h3>Monthly Memberships</h3>
           <p>
-            Make Hidden Level your home base. Unlimited visits, priority access,
-            and member perks — starting at $30/month with tiers up to full VIP.
+            Make Hidden Level your home base with a monthly membership — unlimited
+            public event entries and open cafe access for $70/month.
           </p>
         </div>
       </div>
@@ -216,10 +268,10 @@
       <div class="grid-3">
         <div class="card reveal">
           <div class="card-icon">🤝</div>
-          <h3>Better Together Night</h3>
+          <h3>Community Nights</h3>
           <p>
-            Our weekly community event. Meet locals, form squads, and enjoy
-            shared gaming experiences every Friday. All skill levels welcome.
+            Our weekly community events. Meet locals, form squads, and enjoy
+            shared gaming experiences. All skill levels welcome.
           </p>
           <a href="calendar.html" style="display:inline-block;margin-top:16px;color:var(--cyan);font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;">
             See Calendar →
@@ -227,11 +279,11 @@
         </div>
 
         <div class="card reveal" style="transition-delay:0.1s">
-          <div class="card-icon">👨‍👩‍👧‍👦</div>
-          <h3>Family Game Night</h3>
+          <div class="card-icon">🏆</div>
+          <h3>Tournament Nights</h3>
           <p>
-            A monthly event for families and all ages. Kid-friendly titles, team
-            games, and a welcoming atmosphere for everyone.
+            Bracket-style competition for bragging rights and prizes. Check the
+            calendar and Discord for the next one.
           </p>
           <a href="calendar.html" style="display:inline-block;margin-top:16px;color:var(--cyan);font-family:var(--font-head);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;">
             See Calendar →
@@ -262,7 +314,7 @@
     <div class="container">
       <div class="cta-box reveal">
         <h2>Whether You're Here to <span class="gradient-text">Compete, Connect,</span><br />or Just Have Fun</h2>
-        <p>Day pass $15 · Memberships from $30/mo · VIP $120/mo · Always welcome.</p>
+        <p>Day pass $15 · Monthly membership $70/mo · Private events by request · Always welcome.</p>
         <div class="btn-group">
           <a href="pricing.html" class="btn btn-primary">View Pricing</a>
           <a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer" class="btn btn-discord">Join Discord</a>
@@ -324,8 +376,8 @@
         <h4>Community</h4>
         <ul>
           <li><a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
-          <li><a href="calendar.html">Better Together Night</a></li>
-          <li><a href="calendar.html">Family Game Night</a></li>
+          <li><a href="calendar.html">Community Events</a></li>
+          <li><a href="calendar.html">Tournaments</a></li>
           <li><a href="contact.html">Private Bookings</a></li>
         </ul>
       </div>

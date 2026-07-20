@@ -13,7 +13,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Events & Calendar | Hidden Level Cyber Cafe</title>
-  <meta name="description" content="Join community gaming events in Urbana-Champaign. Better Together Nights every Friday, Family Game Nights monthly, and friendly tournaments." />
+  <meta name="description" content="Join community gaming events in Urbana-Champaign. Weekly community nights, tournaments, and special events — check the calendar for what's coming up." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" />
@@ -30,7 +30,7 @@
   </script>
   <!-- Open Graph / SEO Metadata -->
   <meta property="og:title" content="Events & Calendar | Hidden Level Cyber Cafe" />
-  <meta property="og:description" content="Join community gaming events in Urbana-Champaign. Better Together Nights every Friday, Family Game Nights monthly, and friendly tournaments." />
+  <meta property="og:description" content="Join community gaming events in Urbana-Champaign. Weekly community nights, tournaments, and special events — check the calendar for what's coming up." />
   <meta property="og:image" content="https://hiddenlevelcu.com/logo.svg" />
   <meta property="og:url" content="https://hiddenlevelcu.com/calendar.html" />
   <meta property="og:type" content="website" />
@@ -46,7 +46,13 @@
     </a>
     <ul class="nav__links" id="nav-links">
       <li><a href="index.html" data-page="home">Home</a></li>
-      <li><a href="about.html" data-page="about">About</a></li>
+      <li class="nav__dropdown">
+        <a href="about.html" data-page="about" class="nav__dropdown-toggle" aria-haspopup="true">About<span class="caret">▾</span></a>
+        <ul class="nav__submenu">
+          <li><a href="about.html#about-me">About Me</a></li>
+          <li><a href="about.html#about-business">About the Business</a></li>
+        </ul>
+      </li>
       <li><a href="leaderboard.html" data-page="leaderboard">Leaderboard</a></li>
       <li><a href="calendar.html" data-page="calendar">Events</a></li>
       <li><a href="pricing.html" data-page="pricing">Pricing</a></li>
@@ -99,7 +105,7 @@
         <div class="section-tag">Monthly View</div>
         <h2 class="section-title">Event <span class="gradient-text">Calendar</span></h2>
         <p class="section-sub">
-          Fridays are Better Together Night. The 2nd Saturday is Family Game Night.
+          Green marks community events (free or low cost), red marks tournaments.
           Check Discord for any special events or changes.
         </p>
       </div>
@@ -119,11 +125,11 @@
       <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:20px;padding:0 4px;">
         <div style="display:flex;align-items:center;gap:8px;">
           <span style="width:12px;height:12px;background:rgba(0,255,153,0.2);border:1px solid rgba(0,255,153,0.4);border-radius:3px;display:inline-block;"></span>
-          <span style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.1em;color:var(--text-muted);text-transform:uppercase;">Better Together Night</span>
+          <span style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.1em;color:var(--text-muted);text-transform:uppercase;">Community Events (Free or Low Cost)</span>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span style="width:12px;height:12px;background:rgba(191,0,255,0.2);border:1px solid rgba(191,0,255,0.4);border-radius:3px;display:inline-block;"></span>
-          <span style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.1em;color:var(--text-muted);text-transform:uppercase;">Family Game Night</span>
+          <span style="width:12px;height:12px;background:rgba(255,59,92,0.2);border:1px solid rgba(255,59,92,0.4);border-radius:3px;display:inline-block;"></span>
+          <span style="font-family:var(--font-head);font-size:0.62rem;letter-spacing:0.1em;color:var(--text-muted);text-transform:uppercase;">Tournaments</span>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
           <span style="width:12px;height:12px;background:rgba(0,229,255,0.2);border:1px solid rgba(0,229,255,0.4);border-radius:3px;display:inline-block;"></span>
@@ -247,8 +253,8 @@
         <h4>Community</h4>
         <ul>
           <li><a href="https://discord.gg/w6xh7fzxr3" target="_blank" rel="noopener noreferrer">Discord Server ↗</a></li>
-          <li><a href="calendar.html">Better Together Night</a></li>
-          <li><a href="calendar.html">Family Game Night</a></li>
+          <li><a href="calendar.html">Community Events</a></li>
+          <li><a href="calendar.html">Tournaments</a></li>
           <li><a href="contact.html">Private Bookings</a></li>
         </ul>
       </div>

@@ -897,6 +897,19 @@ section {
   margin-bottom: 20px;
   animation: float 4s ease-in-out infinite;
 }
+.about-photo {
+  display: block;
+  width: 220px;
+  height: 220px;
+  max-width: 100%;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-cyan);
+  box-shadow: var(--glow-cyan);
+  position: relative;
+  z-index: 1;
+}
 .about-location {
   font-family: var(--font-head);
   font-size: 0.75rem;

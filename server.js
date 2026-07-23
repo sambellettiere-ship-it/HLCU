@@ -271,7 +271,7 @@ app.post('/api/events', (req, res) => {
   const { date, title, description, type, startTime, endTime } = req.body;
   if (!date || !title) return res.status(400).json({ error: 'date and title are required' });
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return res.status(400).json({ error: 'date must be YYYY-MM-DD' });
-  const validTypes = ['community', 'family', 'private', 'special'];
+  const validTypes = ['community', 'tournament', 'family', 'private', 'special'];
   const events = readJSON(EVENTS_FILE, []);
   const ev = {
     id: Date.now().toString(),
@@ -298,7 +298,7 @@ app.put('/api/events/:id', (req, res) => {
   if (!date || !title) return res.status(400).json({ error: 'date and title are required' });
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return res.status(400).json({ error: 'date must be YYYY-MM-DD' });
   
-  const validTypes = ['community', 'family', 'private', 'special'];
+  const validTypes = ['community', 'tournament', 'family', 'private', 'special'];
   
   const updatedEvent = {
     ...events[idx],
@@ -356,7 +356,7 @@ app.post('/api/recurring', (req, res) => {
   if (endDate && !/^\d{4}-\d{2}-\d{2}$/.test(endDate)) {
     return res.status(400).json({ error: 'endDate must be YYYY-MM-DD' });
   }
-  const validTypes = ['community', 'family', 'private', 'special'];
+  const validTypes = ['community', 'tournament', 'family', 'private', 'special'];
   const list = readJSON(RECURRING_FILE, []);
   const rule = {
     id: Date.now().toString(),
@@ -405,7 +405,7 @@ app.put('/api/recurring/:id', (req, res) => {
   if (endDate && !/^\d{4}-\d{2}-\d{2}$/.test(endDate)) {
     return res.status(400).json({ error: 'endDate must be YYYY-MM-DD' });
   }
-  const validTypes = ['community', 'family', 'private', 'special'];
+  const validTypes = ['community', 'tournament', 'family', 'private', 'special'];
   
   const updatedRule = {
     ...list[idx],

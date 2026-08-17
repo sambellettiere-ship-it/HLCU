@@ -1817,6 +1817,26 @@ section {
     padding: 10px 14px;
     display: block;
   }
+
+  /* About dropdown: render as a centered, self-contained group.
+     The menu is a centered column, so the desktop absolute submenu and its
+     left-indent don't translate — restyle it as a nested cluster instead. */
+  .nav__links.open .nav__dropdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .nav__links.open .nav__dropdown-toggle {
+    /* Hug the label so the active highlight fits the text, like every other
+       link, instead of stretching to the submenu's width. */
+    display: inline-flex;
+    justify-content: center;
+  }
+  .nav__links.open .nav__dropdown-toggle .caret {
+    /* Submenu is always expanded on mobile — the caret implies a toggle
+       affordance that doesn't exist here. */
+    display: none;
+  }
   .nav__links.open .nav__submenu {
     position: static;
     opacity: 1;
@@ -1826,9 +1846,23 @@ section {
     border: none;
     background: transparent;
     backdrop-filter: none;
-    padding: 0 0 0 14px;
-    margin: 0;
     min-width: 0;
+    margin: 2px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .nav__links.open .nav__submenu a {
+    font-size: 0.6rem;
+    padding: 6px 14px;
+    color: var(--text-faint);
+  }
+  .nav__links.open .nav__submenu a:hover,
+  .nav__links.open .nav__submenu a.active {
+    color: var(--cyan);
+    background: rgba(0,229,255,0.07);
   }
 
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }

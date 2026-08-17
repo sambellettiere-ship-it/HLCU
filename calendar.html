@@ -8,7 +8,7 @@
   <meta name="geo.position" content="40.11624;-88.20455" />
   <meta name="ICBM" content="40.11624, -88.20455" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://hiddenlevelcu.com/logo.svg" />
+  <meta name="twitter:image" content="https://hiddenlevelcu.com/og-image.png" />
   <meta name="keywords" content="gaming events champaign, lan tournaments urbana, super smash bros uiuc, Friday night gaming, hidden level calendar, esports tournaments Illinois" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,9 +31,48 @@
   <!-- Open Graph / SEO Metadata -->
   <meta property="og:title" content="Events & Calendar | Hidden Level Cyber Cafe" />
   <meta property="og:description" content="Join community gaming events in Urbana-Champaign. Weekly community nights, tournaments, and special events — check the calendar for what's coming up." />
-  <meta property="og:image" content="https://hiddenlevelcu.com/logo.svg" />
+  <meta property="og:image" content="https://hiddenlevelcu.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Hidden Level Cyber Cafe — gaming center in Champaign-Urbana, IL" />
   <meta property="og:url" content="https://hiddenlevelcu.com/calendar.html" />
   <meta property="og:type" content="website" />
+  <!-- JSON-LD: recurring community event series + breadcrumb -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hiddenlevelcu.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Events & Calendar", "item": "https://hiddenlevelcu.com/calendar.html" }
+        ]
+      },
+      {
+        "@type": "EventSeries",
+        "name": "Hidden Level Community Gaming Nights",
+        "description": "Weekly community gaming nights, tournaments, and special events at Hidden Level Cyber Cafe in Urbana-Champaign.",
+        "url": "https://hiddenlevelcu.com/calendar.html",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventSchedule": {
+          "@type": "Schedule",
+          "byDay": ["https://schema.org/Tuesday", "https://schema.org/Wednesday", "https://schema.org/Thursday", "https://schema.org/Friday", "https://schema.org/Saturday"],
+          "startTime": "18:00",
+          "endTime": "22:00",
+          "scheduleTimezone": "America/Chicago"
+        },
+        "location": {
+          "@type": "Place",
+          "name": "Hidden Level Cyber Cafe",
+          "address": { "@type": "PostalAddress", "streetAddress": "110 E University Ave Suite I", "addressLocality": "Urbana", "addressRegion": "IL", "postalCode": "61801", "addressCountry": "US" }
+        },
+        "organizer": { "@type": "LocalBusiness", "@id": "https://hiddenlevelcu.com/#localbusiness", "name": "Hidden Level Cyber Cafe", "url": "https://hiddenlevelcu.com/" }
+      }
+    ]
+  }
+  </script>
 </head>
 <body data-page="calendar">
 

@@ -528,7 +528,7 @@ function toggleBookingFields() {
     dotEl.style.animation = 'none';
   } else {
     // Tue-Sat
-    textEl.textContent = 'Open Today: 4–10 PM · Urbana, IL';
+    textEl.textContent = 'Open Today: 6–10 PM · Urbana, IL';
     // Keeping default pulse animation and cyan color since the prompt asks for business hours updates.
     // Resetting just in case.
     dotEl.style.background = ''; 

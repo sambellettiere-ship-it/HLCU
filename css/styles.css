@@ -1802,11 +1802,16 @@ section {
     position: fixed;
     top: var(--nav-h);
     left: 0; right: 0;
-    background: rgba(7,0,15,0.97);
-    backdrop-filter: blur(24px);
+    /* Opaque background: a nested backdrop-filter (the .nav bar already has one)
+       does not blur reliably, which let page content show through the menu. */
+    background: var(--bg);
     padding: 20px 24px;
     border-bottom: 1px solid var(--border);
     gap: 4px;
+    z-index: 199;
+    max-height: calc(100vh - var(--nav-h));
+    max-height: calc(100dvh - var(--nav-h));
+    overflow-y: auto;
   }
   .nav__links.open a {
     padding: 10px 14px;

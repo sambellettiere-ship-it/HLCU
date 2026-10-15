@@ -520,15 +520,15 @@ function toggleBookingFields() {
   if (!textEl || !dotEl) return;
 
   const dayOfWeek = new Date().getDay(); // 0 is Sunday, 1 is Monday
+  const HOURS = { 0: '12–6 PM', 4: '6–10 PM', 5: '6–10 PM', 6: '12–10 PM' }; // Sun, Thu, Fri, Sat
   
-  if (dayOfWeek === 0 || dayOfWeek === 1) { // Sunday or Monday
+  if (!HOURS[dayOfWeek]) { // Mon–Wed
     textEl.textContent = 'Closed Today · Urbana, IL';
     dotEl.style.background = 'var(--text-muted)'; 
     dotEl.style.boxShadow = 'none';
     dotEl.style.animation = 'none';
   } else {
-    // Tue-Sat
-    textEl.textContent = 'Open Today: 6–10 PM · Urbana, IL';
+    textEl.textContent = `Open Today: ${HOURS[dayOfWeek]} · Urbana, IL`;
     // Keeping default pulse animation and cyan color since the prompt asks for business hours updates.
     // Resetting just in case.
     dotEl.style.background = ''; 

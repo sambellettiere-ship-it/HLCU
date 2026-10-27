@@ -11,7 +11,7 @@ const hoursHtml = `        <div class="footer__col">
           <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
             Mon &ndash; Wed: Closed<br>
             Thu &ndash; Fri: 6&ndash;10 PM<br>
-            Saturday: 12&ndash;10 PM<br>
+            Saturday: 2&ndash;10 PM<br>
             Sunday: 12&ndash;6 PM
           </p>
         </div>`;

@@ -520,7 +520,7 @@ function toggleBookingFields() {
   if (!textEl || !dotEl) return;
 
   const dayOfWeek = new Date().getDay(); // 0 is Sunday, 1 is Monday
-  const HOURS = { 0: '12–6 PM', 4: '6–10 PM', 5: '6–10 PM', 6: '12–10 PM' }; // Sun, Thu, Fri, Sat
+  const HOURS = { 0: '12–6 PM', 4: '6–10 PM', 5: '6–10 PM', 6: '2–10 PM' }; // Sun, Thu, Fri, Sat
   
   if (!HOURS[dayOfWeek]) { // Mon–Wed
     textEl.textContent = 'Closed Today · Urbana, IL';

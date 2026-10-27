@@ -122,16 +122,20 @@
       align-items: center; justify-content: center;
       padding: 20px;
       opacity: 0; transition: opacity 0.3s;
+      overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
     }
+    body.modal-open { overflow: hidden; }
     #zoom-modal.show { opacity: 1; }
     .zoom-content {
       max-width: 900px; width: 100%;
+      max-height: calc(100dvh - 40px); overflow-y: auto; overscroll-behavior: contain;
+      margin: auto;
       background: var(--bg-dark);
       border: 1px solid var(--border);
-      border-radius: 8px; overflow: hidden;
+      border-radius: 8px;
       display: flex; flex-direction: column;
     }
-    .zoom-img { width: 100%; max-height: 60vh; object-fit: contain; background: #000; }
+    .zoom-img { width: 100%; max-height: 45vh; flex-shrink: 0; object-fit: contain; background: #000; }
     .zoom-info { padding: 24px; }
     .zoom-title { font-family: var(--font-head); font-size: 1.5rem; color: var(--white); margin-bottom: 8px; }
     .zoom-author { color: var(--cyan); font-weight: 600; margin-bottom: 16px; display: inline-block; }
@@ -145,6 +149,27 @@
       transition: 0.2s;
     }
     .zoom-close:hover { background: var(--primary); border-color: var(--primary); }
+
+    /* SUBMIT MODAL */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
+      background: rgba(0,0,0,0.8); z-index: 2000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px; overflow-y: auto; overscroll-behavior: contain;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .modal-overlay.show { opacity: 1; }
+    .modal {
+      background: var(--bg-card); width: 100%; max-width: 500px; margin: auto;
+      max-height: calc(100dvh - 40px); overflow-y: auto; overscroll-behavior: contain;
+      border-radius: 8px; border: 1px solid var(--border);
+    }
+    .modal-header {
+      padding: 16px 24px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .modal-title { font-family: var(--font-head); color: var(--cyan); font-size: 1.2rem; }
+    .modal-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; line-height: 1; }
   </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0XCF64KN7"></script>
@@ -250,7 +275,7 @@
           <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
             Mon &ndash; Wed: Closed<br>
             Thu &ndash; Fri: 6&ndash;10 PM<br>
-            Saturday: 12&ndash;10 PM<br>
+            Saturday: 2&ndash;10 PM<br>
             Sunday: 12&ndash;6 PM
           </p>
         </div>
@@ -375,6 +400,7 @@
       document.getElementById('zoom-desc').textContent = item.description;
       const modal = document.getElementById('zoom-modal');
       modal.style.display = 'flex';
+      document.body.classList.add('modal-open');
       setTimeout(() => modal.classList.add('show'), 10);
     }
     function closeZoom() {
@@ -382,6 +408,7 @@
       modal.classList.remove('show');
       setTimeout(() => {
         modal.style.display = 'none';
+        document.body.classList.remove('modal-open');
         document.getElementById('zoom-img').src = '';
       }, 300);
     }
@@ -399,13 +426,14 @@
       document.getElementById('sub-msg').textContent = '';
       const modal = document.getElementById('submit-modal');
       modal.style.display = 'flex';
+      document.body.classList.add('modal-open');
       setTimeout(() => modal.classList.add('show'), 10);
     }
     
     function closeSubmitModal() {
       const modal = document.getElementById('submit-modal');
       modal.classList.remove('show');
-      setTimeout(() => { modal.style.display = 'none'; }, 300);
+      setTimeout(() => { modal.style.display = 'none'; document.body.classList.remove('modal-open'); }, 300);
     }
 
     async function submitBuild(e) {

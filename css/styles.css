@@ -297,7 +297,7 @@ section {
 }
 
 .nav__inner {
-  max-width: var(--max-w);
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 24px;
   display: flex;
@@ -347,8 +347,9 @@ section {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
-  padding: 7px 14px;
+  padding: 7px 11px;
   border-radius: var(--radius);
+  white-space: nowrap;
   transition: color var(--fast), background var(--fast);
 }
 .nav__links a:hover,
@@ -357,6 +358,8 @@ section {
   background: rgba(0,229,255,0.07);
 }
 .nav__links a.active { color: var(--cyan); }
+.nav__links a.nav__join { background: linear-gradient(135deg, var(--purple) 0%, var(--cyan) 100%); color: var(--bg); padding: 8px 16px; font-size: 0.65rem; border: none; }
+.nav__links a.nav__join:hover { color: var(--bg); box-shadow: 0 0 16px rgba(191,0,255,0.8), 0 0 40px rgba(0,229,255,0.4); transform: translateY(-3px); }
 .nav__links a.btn-discord { background: var(--discord); color: var(--white); padding: 8px 16px; border: none; }
 .nav__links a.btn-discord:hover { background: var(--discord); color: var(--white); box-shadow: 0 0 32px rgba(88,101,242,0.7); transform: translateY(-3px); }
 
@@ -1793,7 +1796,9 @@ section {
   .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
 }
 
-@media (max-width: 768px) {
+/* Collapse the nav into the hamburger menu once the full link row
+   (including the Become a Member + Discord buttons) no longer fits. */
+@media (max-width: 1380px) {
   .nav__links { display: none; }
   .nav__hamburger { display: flex; }
   .nav__links.open {
@@ -1864,7 +1869,9 @@ section {
     color: var(--cyan);
     background: rgba(0,229,255,0.07);
   }
+}
 
+@media (max-width: 768px) {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
   .contact-layout { grid-template-columns: 1fr; }

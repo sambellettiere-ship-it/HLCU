@@ -1871,12 +1871,20 @@ section {
   }
 }
 
+/* Private-event feature list on the pricing page: 2 columns on wide screens */
+.pe-features { grid-template-columns: repeat(2, 1fr); }
+
 @media (max-width: 768px) {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .pe-features { grid-template-columns: 1fr; }
   .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
   .contact-layout { grid-template-columns: 1fr; }
   .community-inner { grid-template-columns: 1fr; }
-  .footer__grid { grid-template-columns: 1fr; }
+  /* Footer: brand row on top, link columns paired two-up below */
+  .footer__grid { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
+  .footer__brand { grid-column: 1 / -1; }
+  .footer__brand p { max-width: none; }
+  .footer__col address a { overflow-wrap: anywhere; }
   .hero__stats { gap: 28px; }
   section { padding: 64px 0; }
   .about-intro { grid-template-columns: 1fr; }
@@ -1893,4 +1901,16 @@ section {
   .cal-day { min-height: 60px; padding: 6px 4px; }
   .cal-event-pill { font-size: 0.46rem; padding: 2px 4px; }
   .cal-event-pill .ev-time { display: none; }
+
+  /* Stack button groups full-width so buttons are even and easy to tap */
+  .btn-group { flex-direction: column; align-items: stretch; }
+  .btn-group .btn { width: 100%; justify-content: center; text-align: center; }
+  .hide-mobile { display: none; }
+
+  /* Long words in headings (e.g. "CHAMPAIGN-URBANA") shouldn't push past the edge */
+  h1, h2, h3 { overflow-wrap: break-word; }
+}
+
+@media (max-width: 360px) {
+  .footer__grid { grid-template-columns: 1fr; }
 }

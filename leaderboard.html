@@ -19,6 +19,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <style>
+    @media (max-width: 600px) {
+      .lb-filter { width: 100%; }
+      .lb-filter select { flex: 1; min-width: 0; max-width: 100%; }
+      .lb-table th, .lb-table td { padding: 10px 6px !important; font-size: 0.8rem !important; letter-spacing: 0 !important; }
+      #lb-title { font-size: 1.15rem !important; }
+    }
+  </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0XCF64KN7"></script>
   <script>
@@ -99,7 +107,7 @@
       <div class="card reveal">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
           <h2 style="font-size: 1.5rem; color: var(--cyan);" id="lb-title">Leaderboard</h2>
-          <div style="display: flex; gap: 12px; align-items: center;">
+          <div class="lb-filter" style="display: flex; gap: 12px; align-items: center;">
             <label for="game-filter" style="color: var(--text-muted); font-family: var(--font-head); text-transform: uppercase;">Game:</label>
             <select id="game-filter" class="filter-select" onchange="renderLeaderboard()">
               <option value="">Loading...</option>
@@ -108,7 +116,7 @@
         </div>
         
         <div class="table-responsive" style="overflow-x: auto;">
-          <table style="width: 100%; text-align: left; border-collapse: collapse; min-width: 500px;">
+          <table class="lb-table" style="width: 100%; text-align: left; border-collapse: collapse; white-space: nowrap;">
             <thead id="leaderboard-head">
                <!-- dynamically populated -->
             </thead>

@@ -39,6 +39,12 @@ if (CANONICAL_HOST) {
   });
 }
 
+// ── /index.html → / (SEO: Google was indexing both as separate pages) ──
+app.get(['/index.html', '/index.htm'], (req, res) => {
+  const qs = req.originalUrl.indexOf('?');
+  res.redirect(301, '/' + (qs >= 0 ? req.originalUrl.slice(qs) : ''));
+});
+
 app.use(express.json({ limit: '10mb' }));
 const UPLOADS_DIR = path.join(DATA_DIR, 'uploads');
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
